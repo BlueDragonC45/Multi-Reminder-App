@@ -14,11 +14,11 @@
 
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".reminder_creation_activity" />
-        <activity android:name=".micro_activity" />
-        <activity android:name=".meso_activity" />
-        <activity android:name=".macro_activity" />
-        <activity android:name=".main_page_activity" />
+        <activity android:name=".ReminderCreationActivity" />
+        <activity android:name=".MicroActivity" />
+        <activity android:name=".MesoActivity" />
+        <activity android:name=".MacroActivity" />
+        <activity android:name=".MainPageActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

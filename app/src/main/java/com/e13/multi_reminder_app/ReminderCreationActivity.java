@@ -7,19 +7,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class macro_activity extends AppCompatActivity {
+public class ReminderCreationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.macro_list);
+        setContentView(R.layout.reminder_creation);
 
-        final Button newReminder =  findViewById(R.id.newReminder2);
+        final Button viewReminder =  findViewById(R.id.viewReminders2);
 
-        newReminder.setOnClickListener(new View.OnClickListener() {
+        viewReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(macro_activity.this, reminder_creation_activity.class));
+                startActivity(new Intent(ReminderCreationActivity.this, MainPageActivity.class));
             }
         });
     }

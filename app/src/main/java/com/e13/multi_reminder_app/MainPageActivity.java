@@ -15,10 +15,12 @@ import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class main_page_activity extends AppCompatActivity {
+public class MainPageActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,28 +35,28 @@ public class main_page_activity extends AppCompatActivity {
         macro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(main_page_activity.this, macro_activity.class));
+                startActivity(new Intent(MainPageActivity.this, MacroActivity.class));
             }
         });
 
         meso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(main_page_activity.this, meso_activity.class));
+                startActivity(new Intent(MainPageActivity.this, MesoActivity.class));
             }
         });
 
         micro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(main_page_activity.this, micro_activity.class));
+                startActivity(new Intent(MainPageActivity.this, MicroActivity.class));
             }
         });
 
         newReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(main_page_activity.this, reminder_creation_activity.class));
+                startActivity(new Intent(MainPageActivity.this, ReminderCreationActivity.class));
             }
         });
 
@@ -67,40 +69,16 @@ public class main_page_activity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationView);
+        final HelperMethods helper = new HelperMethods();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-//                    case R.id.comingUpTabDrawer:
-//                        drawerLayout.closeDrawers();
-//                        startActivity(new Intent(activity_drawer.this, coming_up_activity.class));
-//                        return true;
-                    case R.id.newReminderDrawer:
-                        startActivity(new Intent(main_page_activity.this, reminder_creation_activity.class));
-                        drawerLayout.closeDrawers();
-                        return true;
-                    case R.id.macroButtonDrawer:
-                        startActivity(new Intent(main_page_activity.this, macro_activity.class));
-                        drawerLayout.closeDrawers();
-                        return true;
-                    case R.id.mesoButtonDrawer:
-                        startActivity(new Intent(main_page_activity.this, meso_activity.class));
-                        drawerLayout.closeDrawers();
-                        return true;
-                    case R.id.microButtonDrawer:
-                        startActivity(new Intent(main_page_activity.this, micro_activity.class));
-                        drawerLayout.closeDrawers();
-                        return true;
-//                    case R.id.settings:
-//                        startActivity(new Intent(activity_drawer.this, settings.class));
-//                        drawerLayout.closeDrawers();
-//                        return true;
-                }
+                drawerLayout.closeDrawers();
+                startActivity(new Intent(MainPageActivity.this, helper.helpingNavOnClick(item)));
                 return true;
             }
         });
-
 
     }
 
