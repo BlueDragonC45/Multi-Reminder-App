@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="@string/comingUpTab"
+            android:id="@+id/comingUpTabDrawer"/>
+        <item
+            android:title="@string/newReminder"
+            android:id="@+id/newReminderDrawer"/>
+        <item
+            android:title="@string/macro"
+            android:id="@+id/macroButtonDrawer"/>
+        <item
+            android:title="@string/meso"
+            android:id="@+id/mesoButtonDrawer"/>
+        <item
+            android:title="@string/micro"
+            android:id="@+id/microButtonDrawer"/>
+        <item
+            android:title="@string/settings"
+            android:id="@+id/settings"/>
+
+    </group>
+</menu>

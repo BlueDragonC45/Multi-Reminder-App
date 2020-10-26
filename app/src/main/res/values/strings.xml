@@ -12,8 +12,15 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string name="reminder_tier_list">Reminder tier list</string>
+
 <!--    Buttons-->
     <string name="menu">Menu</string>
+    <string name="comingUpTab">Coming up</string>
     <string name="newReminder">New Reminder</string>
+    <string name="macro">Macro Reminders</string>
+    <string name="meso">Meso Reminders</string>
+    <string name="micro">Micro Reminders</string>
     <string name="settings">Settings</string>
+
 </resources>

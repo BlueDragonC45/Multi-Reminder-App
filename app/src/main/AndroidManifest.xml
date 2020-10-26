@@ -11,8 +11,14 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity_drawer"
+
             android:label="@string/title_activity_drawer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".reminder_creation_activity" />
+        <activity android:name=".micro_activity" />
+        <activity android:name=".meso_activity" />
+        <activity android:name=".macro_activity" />
+        <activity android:name=".main_page_activity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
