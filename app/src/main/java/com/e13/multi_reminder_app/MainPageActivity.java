@@ -21,12 +21,12 @@ public class MainPageActivity extends AppCompatActivity {
     private NavigationView navigationView;
     DatabaseHelper myDb;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
         myDb = new DatabaseHelper(this);
+        //final Reminder rmd = new Reminder("Rent", 1, "Macro", "Monthly");
 
         final Button macro = findViewById(R.id.macroButton);
         final Button meso = findViewById(R.id.mesoButton);

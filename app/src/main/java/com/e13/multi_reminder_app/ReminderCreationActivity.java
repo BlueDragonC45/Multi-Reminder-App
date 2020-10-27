@@ -14,7 +14,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_creation);
 
-        final Button viewReminder =  findViewById(R.id.viewReminders2);
+        final Button viewReminder = findViewById(R.id.nr_cancel);
 
         viewReminder.setOnClickListener(new View.OnClickListener() {
             @Override

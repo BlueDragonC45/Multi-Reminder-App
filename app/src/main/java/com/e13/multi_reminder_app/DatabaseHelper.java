@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
     public static final String DATABASE_NAME = "reminders.db";
     public static final String TABLE_NAME = "reminder_table";
     public static final String COL_0 = "id";
