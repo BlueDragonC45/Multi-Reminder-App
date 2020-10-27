@@ -10,12 +10,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "reminders.db";
     public static final String TABLE_NAME = "reminder_table";
     public static final String COL_0 = "id";
-    public static final String COL_1 = "name";
-    public static final String COL_2 = "time";
-    public static final String COL_3 = "priority";
-    public static final String COL_4 = "tier";
-    public static final String COL_5 = "frequency";
+    public static final String COL_1 = "reminder";
+//    public static final String COL_1 = "name";
+//    public static final String COL_2 = "time";
+//    public static final String COL_3 = "priority";
+//    public static final String COL_4 = "tier";
+//    public static final String COL_5 = "frequency";
     public static final String COL_6 = "attachment";
+    public static final String COL_7 = "this_week_flag";
+    public static final String COL_8 = "active";
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -25,8 +28,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, " +
-                "TIME STRING, PRIORITY INTEGER, TIER STRING, FREQUENCY STRING, ATTACHMENT INTEGER)");
+        db.execSQL("create table " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, REMINDER BLOB, ATTACHMENT INTEGER, " +
+                "THIS_WEEK_FLAG INTEGER, ACTIVE INTEGER)");
     }
 
     @Override
