@@ -4,6 +4,8 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Calendar;
+
 public class HelperMethods extends AppCompatActivity {
 
     public Class helpingNavOnClick(MenuItem item) {
@@ -22,6 +24,20 @@ public class HelperMethods extends AppCompatActivity {
 //                        return settings.class;
         }
         return MainPageActivity.class;
+    }
+
+    public long getTimeUntil(int year, int month, int day, int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        System.out.println(calendar.getTimeInMillis() - System.currentTimeMillis());
+        return calendar.getTimeInMillis() - System.currentTimeMillis();
     }
 
 

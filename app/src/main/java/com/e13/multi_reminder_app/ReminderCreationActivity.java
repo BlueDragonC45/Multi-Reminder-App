@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class ReminderCreationActivity extends AppCompatActivity {
 
+    private HelperMethods helper = new HelperMethods();
     private int priority = -1;
     private String tier;
     private String frequency;
@@ -31,13 +33,15 @@ public class ReminderCreationActivity extends AppCompatActivity {
         });
 
         final Button createReminder = findViewById(R.id.nr_create);
-        final TextView name = findViewById(R.id.editTextName);
+        final EditText name = findViewById(R.id.editTextName);
         final DatePicker datePicker = findViewById(R.id.createAlarm_datePicker);
         final TimePicker timePicker = findViewById(R.id.createAlarm_timePicker);
 
         createReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long timeUntil = helper.getTimeUntil(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
+                        timePicker.getHour(), timePicker.getMinute());
                 if (name.length() == 0) {
                     Toast.makeText(getApplicationContext(), "You need to pick a name!", Toast.LENGTH_LONG).show();
                     return;
@@ -49,9 +53,11 @@ public class ReminderCreationActivity extends AppCompatActivity {
                     return;
                 } else if (frequency == null) {
                     frequency = "NEVER";
+                } else if (timeUntil <= 0) {
+                    Toast.makeText(getApplicationContext(), "That date and time has already passed!", Toast.LENGTH_LONG).show();
+                    return;
                 }
-                Reminder rmd = new Reminder(name.toString(), datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
-                        timePicker.getHour(), timePicker.getMinute(), priority, tier, frequency);
+                Reminder rmd = new Reminder(name.getText().toString(), timeUntil, priority, tier, frequency);
             }
         });
 
