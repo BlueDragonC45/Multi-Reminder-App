@@ -1,6 +1,8 @@
 package com.e13.multi_reminder_app;
 
-public class Reminder {
+import java.io.Serializable;
+
+public class Reminder implements Serializable {
 
     public String name;
     public long timeUntil;
@@ -25,6 +27,10 @@ public class Reminder {
         this.priority = priority;
         this.tier = tier;
         this.frequency = frequency;
+    }
+
+    public String toString() {
+        return "" + name + ", " + timeUntil + ", " + priority + ", " + tier + ", " + frequency;
     }
 
 

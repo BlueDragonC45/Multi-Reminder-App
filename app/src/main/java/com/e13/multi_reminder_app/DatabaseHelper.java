@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -51,9 +52,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ByteArrayOutputStream OutputStream = new ByteArrayOutputStream();
             ObjectOutputStream ObjOutputStream = new ObjectOutputStream(OutputStream);
             ObjOutputStream.writeObject(object);
-            byte[] employeeAsBytes = OutputStream.toByteArray();
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(employeeAsBytes);
-            return employeeAsBytes;
+            byte[] objectAsBytes = OutputStream.toByteArray();
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(objectAsBytes);
+            return objectAsBytes;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,19 +85,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2, attachment);
         contentValues.put(COL_3, this_week_flag);
         contentValues.put(COL_4, 0);
+        System.out.println(Arrays.toString(makeByte(reminder)));
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
+        db.close();
         return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
+        db.close();
         return res;
     }
 
-    public boolean updateData(String id, Reminder reminder, int attachment, int active) {
+    public boolean updateData(int id, Reminder reminder, int attachment, int active) {
         SQLiteDatabase db = this.getWritableDatabase();
         int this_week_flag;
         if (reminder.timeUntil < 604800001) {
@@ -110,25 +114,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2, attachment);
         contentValues.put(COL_3, this_week_flag);
         contentValues.put(COL_4, active);
-        db.update(TABLE_NAME, contentValues, "ID = ?", new String[] { id });
-
+        db.update(TABLE_NAME, contentValues, "ID = ?", new String[] { String.valueOf(id) });
+        db.close();
         return true;
     }
 
-    public Integer deleteData (String id) {
+    public Integer deleteData (int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "ID = ?", new String[] {id });
+        Integer integer= db.delete(TABLE_NAME, "ID = ?", new String[] { String.valueOf(id) });
+        db.close();
+        return integer;
     }
 
-        public Reminder getById(int id) {   //This will have to be modified for attachments
-            Cursor res = getAllData();
-            while (res.moveToNext()) {
-                if (id == res.getInt(0)) {
-                    Reminder reminder = (Reminder) readByte(res.getBlob(2));
-                    return reminder;
-                }
+    public Reminder getById(int id) throws  IndexOutOfBoundsException{   //This will have to be modified for attachments
+        Cursor res = getAllData();
+        while (res.moveToNext()) {
+            if (id == res.getInt(0)) {
+                return (Reminder) readByte(res.getBlob(2));
             }
-            throw new IndexOutOfBoundsException("Id not found");
+        }
+        throw new IndexOutOfBoundsException("Id not found");
     }
 
 }

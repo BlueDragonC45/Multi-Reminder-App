@@ -2,6 +2,7 @@ package com.e13.multi_reminder_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,8 @@ import android.widget.Toast;
 
 public class ReminderCreationActivity extends AppCompatActivity {
 
-    private HelperMethods helper = new HelperMethods();
+    HelperMethods helper = new HelperMethods();
+    DatabaseHelper dbHelper = new DatabaseHelper(this);
     private int priority = -1;
     private String tier;
     private String frequency;
@@ -58,6 +60,12 @@ public class ReminderCreationActivity extends AppCompatActivity {
                     return;
                 }
                 Reminder rmd = new Reminder(name.getText().toString(), timeUntil, priority, tier, frequency);
+                if (dbHelper.insertData(rmd, 0)) {
+                    Toast.makeText(getApplicationContext(), "Reminder added!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Reminder not added!", Toast.LENGTH_LONG).show();
+                }
+                startActivity(new Intent(ReminderCreationActivity.this, NotificationHandler.class));
             }
         });
 
