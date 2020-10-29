@@ -89,14 +89,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
-        db.close();
+//        db.close();
         return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
-        db.close();
+//        db.close();
         return res;
     }
 
@@ -115,14 +115,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_3, this_week_flag);
         contentValues.put(COL_4, active);
         db.update(TABLE_NAME, contentValues, "ID = ?", new String[] { String.valueOf(id) });
-        db.close();
+//        db.close();
         return true;
     }
 
     public Integer deleteData (int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Integer integer= db.delete(TABLE_NAME, "ID = ?", new String[] { String.valueOf(id) });
-        db.close();
+//        db.close();
         return integer;
     }
 

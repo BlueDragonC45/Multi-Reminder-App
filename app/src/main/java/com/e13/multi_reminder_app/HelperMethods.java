@@ -39,8 +39,7 @@ public class HelperMethods extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        System.out.println(calendar.getTimeInMillis() - System.currentTimeMillis());
-        return calendar.getTimeInMillis() - System.currentTimeMillis();
+        return calendar.getTimeInMillis();
     }
 
 

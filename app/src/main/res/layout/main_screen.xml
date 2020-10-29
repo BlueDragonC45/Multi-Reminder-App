@@ -70,6 +70,14 @@
                 android:text="Temp button delete"
                 app:layout_constraintTop_toBottomOf="@+id/viewAll" />
 
+            <Button
+                android:id="@+id/createnotif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Temp button notif"
+                app:layout_constraintTop_toBottomOf="@+id/delete" />
+
         </LinearLayout>
 
 

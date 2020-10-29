@@ -5,9 +5,13 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -37,6 +41,7 @@ public class MainPageActivity extends AppCompatActivity {
         final Button newReminder = findViewById(R.id.newReminder1);
         final Button temp = findViewById(R.id.viewAll);
         final Button temp2 = findViewById(R.id.delete);
+        final Button temp3 = findViewById(R.id.createnotif);
 
         macro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +102,13 @@ public class MainPageActivity extends AppCompatActivity {
             }
         });
 
+//        temp3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                createNotification("Title", "It works fine...");
+//            }
+//        });
+
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
@@ -138,5 +150,6 @@ public class MainPageActivity extends AppCompatActivity {
         builder.setMessage(message);
         builder.show();
     }
+
 
 }
