@@ -18,7 +18,6 @@ import androidx.core.app.NotificationCompat;
 
 public class NotificationHandler extends AppCompatActivity {
 
-    HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,6 @@ public class NotificationHandler extends AppCompatActivity {
         Reminder firstReminder = null;
         boolean active = false;
         boolean empty = false;
-        int counter = 1;
         long lowestTime = Long.MAX_VALUE;
         Cursor res = dbHelper.getAllData();
 
@@ -41,7 +39,7 @@ public class NotificationHandler extends AppCompatActivity {
                 Reminder reminder = (Reminder) dbHelper.readByte(res.getBlob(1));
                 if ((reminder.timeUntil - System.currentTimeMillis()) < 10000) {
                     active = true;
-                    dbHelper.updateData(counter, reminder, res.getInt(3), 1);
+                    dbHelper.updateData(res.getInt(0), reminder, res.getInt(3), 1);
                     firstReminder = reminder;
                 } else if (res.getInt(4) == 1) {
                     active = true;

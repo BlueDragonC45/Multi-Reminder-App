@@ -75,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertData(Reminder reminder, int attachment) {
         SQLiteDatabase db = this.getWritableDatabase();
         int this_week_flag;
-        if (reminder.timeUntil < 604800001) {
+        if ((reminder.timeUntil-System.currentTimeMillis()) < 604800001) {
             this_week_flag = 1;
         } else {
             this_week_flag = 0;
@@ -89,14 +89,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
-//        db.close();
         return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
-//        db.close();
         return res;
     }
 
@@ -115,14 +113,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_3, this_week_flag);
         contentValues.put(COL_4, active);
         db.update(TABLE_NAME, contentValues, "ID = ?", new String[] { String.valueOf(id) });
-//        db.close();
         return true;
     }
 
     public Integer deleteData (int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Integer integer= db.delete(TABLE_NAME, "ID = ?", new String[] { String.valueOf(id) });
-//        db.close();
         return integer;
     }
 

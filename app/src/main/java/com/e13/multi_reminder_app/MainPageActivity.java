@@ -84,6 +84,7 @@ public class MainPageActivity extends AppCompatActivity {
                     buffer.append("Id: " + res.getInt(0) + "\n");
                     buffer.append("Reminder: " + (dbHelper.readByte(res.getBlob(1))).toString() + "\n");
                     buffer.append("This week: " + res.getInt(3) + "\n");
+                    buffer.append("Active: " + res.getInt(4) + "\n");
                 }
                 showMessage("Reminders", buffer.toString());
             }
