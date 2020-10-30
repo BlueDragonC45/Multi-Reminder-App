@@ -30,16 +30,16 @@ public class MesoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meso_reminders);
+        setContentView(R.layout.meso_list);
 
-//        final Button newReminder =  findViewById(R.id.newReminder3);
-//
-//        newReminder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MesoActivity.this, ReminderCreationActivity.class));
-//            }
-//        });
+        final Button newReminder =  findViewById(R.id.newReminder3);
+
+        newReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MesoActivity.this, ReminderCreationActivity.class));
+            }
+        });
 
 
         final Toolbar toolbar = findViewById(R.id.toolbar);

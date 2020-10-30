@@ -30,16 +30,16 @@ public class MicroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_micro_reminders);
+        setContentView(R.layout.micro_list);
 
-//        final Button newReminder =  findViewById(R.id.newReminder4);
-//
-//        newReminder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MicroActivity.this, ReminderCreationActivity.class));
-//            }
-//        });
+        final Button newReminder =  findViewById(R.id.newReminder4);
+
+        newReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MicroActivity.this, ReminderCreationActivity.class));
+            }
+        });
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

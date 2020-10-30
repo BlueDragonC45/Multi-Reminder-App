@@ -30,16 +30,16 @@ public class MacroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_macro_reminders);
+        setContentView(R.layout.macro_list);
 
-//        final Button newReminder =  findViewById(R.id.newReminder2);
-//
-//        newReminder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MacroActivity.this, ReminderCreationActivity.class));
-//            }
-//        });
+        final Button newReminder =  findViewById(R.id.newReminder2);
+
+        newReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MacroActivity.this, ReminderCreationActivity.class));
+            }
+        });
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
