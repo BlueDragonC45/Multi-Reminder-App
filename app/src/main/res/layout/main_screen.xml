@@ -54,6 +54,30 @@
                 android:text="Create New Reminder"
                 app:layout_constraintTop_toBottomOf="@+id/microButton" />
 
+            <Button
+                android:id="@+id/viewAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Temp button"
+                app:layout_constraintTop_toBottomOf="@+id/newReminder1" />
+
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Temp button delete"
+                app:layout_constraintTop_toBottomOf="@+id/viewAll" />
+
+            <Button
+                android:id="@+id/createnotif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Temp button notif"
+                app:layout_constraintTop_toBottomOf="@+id/delete" />
+
         </LinearLayout>
 
 

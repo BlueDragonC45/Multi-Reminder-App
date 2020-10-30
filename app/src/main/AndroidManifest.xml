@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_mra"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".NotificationHandler" />
         <activity android:name=".ReminderCreationActivity" />
         <activity android:name=".MicroActivity" />
         <activity android:name=".MesoActivity" />
