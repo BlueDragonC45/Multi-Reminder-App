@@ -102,13 +102,6 @@ public class MainPageActivity extends AppCompatActivity {
             }
         });
 
-//        temp3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                createNotification("Title", "It works fine...");
-//            }
-//        });
-
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
