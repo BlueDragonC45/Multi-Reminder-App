@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.e13.multi_reminder_app.RecyclerViewParts.RecyclerViewAdapterInactive;
 import com.google.android.material.navigation.NavigationView;
@@ -83,8 +84,6 @@ public class MacroActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -100,10 +99,10 @@ public class MacroActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
-        while (res.moveToNext()) {
-            if(res.getCount() == 0) {
-                break;
-            } else {
+        if(res.getCount() == 0) {
+            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
+        } else {
+            while (res.moveToNext()) {
                 Reminder reminder = (Reminder) dbHelper.readByte(res.getBlob(1));
                 if (reminder.tier.equals("MACRO")) {
                     calendar.setTimeInMillis(reminder.timeUntil);

@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.e13.multi_reminder_app.RecyclerViewParts.ManageActiveReminders;
+
 import java.util.Calendar;
 
 public class HelperMethods extends AppCompatActivity {
@@ -15,14 +17,16 @@ public class HelperMethods extends AppCompatActivity {
         switch (item.getItemId()) {
 //                    case R.id.comingUpTabDrawer:
 //                        return coming_up_activity.class;
-            case R.id.newReminderDrawer:
-                return ReminderCreationActivity.class;
+            case R.id.activeReminderDrawer:
+                return ManageActiveReminders.class;
             case R.id.macroButtonDrawer:
                 return MacroActivity.class;
             case R.id.mesoButtonDrawer:
                 return MesoActivity.class;
             case R.id.microButtonDrawer:
                 return MicroActivity.class;
+            case R.id.newReminderDrawer:
+                return ReminderCreationActivity.class;
 //                    case R.id.settings:
 //                        return settings.class;
         }
