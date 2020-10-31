@@ -2,7 +2,7 @@ package com.e13.multi_reminder_app;
 
 import java.io.Serializable;
 
-public class Reminder implements Serializable {
+public class Reminder implements Serializable, Comparable<Reminder> {
 
     public String name;
     public long timeUntil;
@@ -26,6 +26,21 @@ public class Reminder implements Serializable {
         this.tier = reminder.tier;
         this.frequency = reminder.frequency;
 
+    }
+
+    @Override
+    public int compareTo(Reminder reminder) {
+        if (this.priority == reminder.priority) {
+            if (this.timeUntil >= reminder.timeUntil) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (this.priority > reminder.priority) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     public String toString() {

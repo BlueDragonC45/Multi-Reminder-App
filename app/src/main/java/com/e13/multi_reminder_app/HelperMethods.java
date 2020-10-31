@@ -1,10 +1,7 @@
 package com.e13.multi_reminder_app;
 
-import android.content.Intent;
-import android.os.Handler;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.e13.multi_reminder_app.RecyclerViewParts.ManageActiveReminders;
@@ -60,7 +57,19 @@ public class HelperMethods extends AppCompatActivity {
         return "No priority found";
     }
 
-
+    public int getPriorityImage(int i) {
+        switch (i) {
+            case 1:
+                return R.drawable.bluesquare;
+            case 2:
+                return R.drawable.greensquare;
+            case 3:
+                return R.drawable.orangesquare;
+            case 4:
+                return R.drawable.redsquare;
+        }
+        return R.drawable.errorsquare;
+    }
 
 
 }

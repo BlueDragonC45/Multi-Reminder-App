@@ -58,8 +58,10 @@ public class NotificationHandler extends AppCompatActivity {
         } else if (!empty) {
             createDelayedIntent(intent, lowestTime);
             startActivity(new Intent(NotificationHandler.this, MainPageActivity.class));
+            finish();
         } else {
             startActivity(new Intent(NotificationHandler.this, MainPageActivity.class));
+            finish();
         }
     }
 

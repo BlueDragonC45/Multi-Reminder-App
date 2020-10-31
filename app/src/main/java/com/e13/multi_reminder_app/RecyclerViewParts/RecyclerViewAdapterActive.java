@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.e13.multi_reminder_app.DatabaseHelper;
+import com.e13.multi_reminder_app.HelperMethods;
 import com.e13.multi_reminder_app.NotificationHandler;
 import com.e13.multi_reminder_app.R;
 import com.e13.multi_reminder_app.Reminder;
@@ -25,13 +27,14 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerViewAdapterActive.ViewHolder> {
 
+    HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper;
     private ArrayList<String> mlist;
     private Context mContext;
 
-    public RecyclerViewAdapterActive(ArrayList<String> list, Context context) {
-        mlist = list;
-        mContext = context;
+    public RecyclerViewAdapterActive (ArrayList<String> mlist, Context mcontext) {
+        this.mlist = mlist;
+        this.mContext = mcontext;
         dbHelper = new DatabaseHelper(mContext);
     }
 
@@ -46,6 +49,7 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerViewAdapterActive.ViewHolder holder, final int position) {
         final String[] str = mlist.get(position).split(",");
         holder.reminderName.setText(String.format("%s:    %s", str[0], str[1]));
+        holder.priorityColor.setImageResource(helper.getPriorityImage(Integer.parseInt(str[6])));
 
         holder.parent_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,10 +91,12 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView reminderName;
+        ImageView priorityColor;
         LinearLayout parent_layout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             reminderName = itemView.findViewById(R.id.text_value);
+            priorityColor = itemView.findViewById(R.id.priorityImageView);
             parent_layout = itemView.findViewById(R.id.parent_layout);
         }
     }

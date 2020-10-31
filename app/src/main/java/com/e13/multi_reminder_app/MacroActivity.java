@@ -90,11 +90,14 @@ public class MacroActivity extends AppCompatActivity {
     public void addAll(ArrayList<String> list){
         macroReminders.clear();
         macroReminders.addAll(list);
+
         adapter.notifyDataSetChanged();
     }
 
     private void initList() {
         ArrayList<String> dataList = new ArrayList<>();
+        ArrayList<Reminder> sorter = new ArrayList<>();
+        ArrayList<Integer> ids = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
@@ -103,12 +106,17 @@ public class MacroActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
         } else {
             while (res.moveToNext()) {
-                Reminder reminder = (Reminder) dbHelper.readByte(res.getBlob(1));
+                sorter.add( (Reminder) dbHelper.readByte(res.getBlob(1)));
+                ids.add(res.getInt(0));
+                sorter.sort(null);
+            }
+            for (int i = 0; i < sorter.size(); i++) {
+                Reminder reminder =sorter.get(i);
                 if (reminder.tier.equals("MACRO")) {
                     calendar.setTimeInMillis(reminder.timeUntil);
                     String priority = helper.getPriority(reminder.priority);
                     String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                            + reminder.frequency + "," + res.getInt(0) + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
+                            + reminder.frequency + "," + ids.get(i) + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
                     dataList.add(msg);
                 }
             }
