@@ -1,8 +1,10 @@
 package com.e13.multi_reminder_app.RecyclerViewParts;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.e13.multi_reminder_app.DatabaseHelper;
+import com.e13.multi_reminder_app.MacroActivity;
+import com.e13.multi_reminder_app.NotificationHandler;
 import com.e13.multi_reminder_app.R;
 
 import java.util.ArrayList;
@@ -44,15 +48,12 @@ public class RecyclerViewAdapterInactive extends RecyclerView.Adapter<RecyclerVi
 
         holder.parent_layout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, mlist.get(position), Toast.LENGTH_LONG).show();
-
-
+            public void onClick(final View v) {
                 AlertDialog.Builder builder =  new AlertDialog.Builder(mContext);
                 builder.setTitle(str[0]);
                 builder.setMessage("Date: " + str[1] + "\n" + "Priority: " + str[2] + "\n" + "Frequency: " + str[3]);
 
-                builder.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AlertDialog.Builder confirm =  new AlertDialog.Builder(mContext);
@@ -61,9 +62,18 @@ public class RecyclerViewAdapterInactive extends RecyclerView.Adapter<RecyclerVi
                         confirm.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dbHelper.deleteData(Integer.getInteger(str[4]));
+                                dbHelper.deleteData(Integer.parseInt(str[4]));
+                                Toast.makeText(mContext, "Reminder " + str[0] + " deleted", Toast.LENGTH_LONG).show();
+
+                                Intent intent = new Intent (v.getContext(), MacroActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                v.getContext().startActivity(intent);
+                                Activity activity = (Activity) v.getContext();
+                                activity.finish();
                             }
                         });
+                        AlertDialog confirmAlert = confirm.create();
+                        confirmAlert.show();
                     }
                 });
 

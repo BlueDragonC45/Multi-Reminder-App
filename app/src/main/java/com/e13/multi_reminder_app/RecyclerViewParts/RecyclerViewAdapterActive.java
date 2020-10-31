@@ -1,5 +1,6 @@
 package com.e13.multi_reminder_app.RecyclerViewParts;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.content.Context;
@@ -68,6 +69,8 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
                                 0, 0);
                         Intent intent = new Intent (v.getContext(), NotificationHandler.class);
                         v.getContext().startActivity(intent);
+                        Activity activity = (Activity) v.getContext();
+                        activity.finish();
                     }
                 });
 

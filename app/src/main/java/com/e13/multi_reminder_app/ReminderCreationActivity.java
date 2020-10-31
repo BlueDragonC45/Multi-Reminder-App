@@ -61,7 +61,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
                 }
                 Reminder rmd = new Reminder(name.getText().toString(), timeUntil, priority, tier, frequency);
                 if (dbHelper.insertData(rmd, 0)) {
-                    Toast.makeText(getApplicationContext(), "Reminder added!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Reminder " + rmd.name + " added!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Reminder not added!", Toast.LENGTH_LONG).show();
                 }
@@ -97,19 +97,19 @@ public class ReminderCreationActivity extends AppCompatActivity {
                 tier = "MICRO";
                 break;
             case R.id.radioNever:
-                frequency = "NEVER";
+                frequency = "Never";
                 break;
             case R.id.radioHour:
-                frequency = "HOUR";
+                frequency = "Hourly";
                 break;
             case R.id.radioDay:
-                frequency = "DAY";
+                frequency = "Daily";
                 break;
             case R.id.radioWeek:
-                frequency = "WEEK";
+                frequency = "Weekly";
                 break;
             case R.id.radioMonth:
-                frequency = "MONTH";
+                frequency = "Monthly";
                 break;
         }
     }
