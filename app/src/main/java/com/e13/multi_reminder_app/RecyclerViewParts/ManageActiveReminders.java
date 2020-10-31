@@ -91,21 +91,23 @@ public class ManageActiveReminders extends AppCompatActivity {
         ArrayList<String> dataList = new ArrayList<>();
         ArrayList<Reminder> sorter = new ArrayList<>();
         ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<Integer> active = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
         if(res.getCount() == 0) {
-            Toast.makeText(getApplicationContext(), "No active reminders to show", Toast.LENGTH_LONG).show();
+
         } else {
             while (res.moveToNext()) {
                 sorter.add( (Reminder) dbHelper.readByte(res.getBlob(1)));
                 ids.add(res.getInt(0));
-                sorter.sort(null);
+                active.add(res.getInt(4));
             }
+            sorter.sort(null);
             for (int i = 0; i < sorter.size(); i++) {
                 Reminder reminder = sorter.get(i);
-                if (res.getInt(4) == 1) {
+                if (active.get(i) == 1) {
                     calendar.setTimeInMillis(reminder.timeUntil);
                     String priority = helper.getPriority(reminder.priority);
                     String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
@@ -113,6 +115,9 @@ public class ManageActiveReminders extends AppCompatActivity {
                     dataList.add(msg);
                 }
             }
+        }
+        if (dataList.size() == 0) {
+            Toast.makeText(getApplicationContext(), "No active reminders to show", Toast.LENGTH_LONG).show();
         }
         addAll(dataList);
     }

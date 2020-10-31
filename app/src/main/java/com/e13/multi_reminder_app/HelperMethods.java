@@ -71,5 +71,22 @@ public class HelperMethods extends AppCompatActivity {
         return R.drawable.errorsquare;
     }
 
+    public long findNewTime(String frequency, long currentTime) {
+        switch (frequency) {
+            case "Hourly":
+                return currentTime + 3600000;
+            case "Daily":
+                return currentTime + 86400000;
+            case "Weekly":
+                return currentTime + 604800000;
+            case "Monthly":
+                Calendar c = Calendar.getInstance();
+                c.setTimeInMillis(currentTime);
+                c.add(Calendar.MONTH, c.get(Calendar.MONTH)+1);
+                return c.getTimeInMillis();
+        }
+        return 0;
+    }
+
 
 }

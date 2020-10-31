@@ -103,7 +103,7 @@ public class MacroActivity extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
         if(res.getCount() == 0) {
-            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
+
         } else {
             while (res.moveToNext()) {
                 sorter.add( (Reminder) dbHelper.readByte(res.getBlob(1)));
@@ -120,6 +120,9 @@ public class MacroActivity extends AppCompatActivity {
                     dataList.add(msg);
                 }
             }
+        }
+        if (dataList.size() == 0) {
+            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
         }
         addAll(dataList);
     }

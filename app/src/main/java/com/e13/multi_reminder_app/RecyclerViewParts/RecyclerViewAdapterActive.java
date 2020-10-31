@@ -62,7 +62,18 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
                 builder.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dbHelper.deleteData(Integer.parseInt(str[4]));
+                        if (str[3].equals("Never")) {
+                            dbHelper.deleteData(Integer.parseInt(str[4]));
+                        } else {
+                            long newTime = helper.findNewTime(str[3], Long.parseLong(str[5]));
+                            dbHelper.updateData(Integer.parseInt(str[4]), new Reminder(str[0], newTime, Integer.parseInt(str[6]), str[7], str[3]),
+                                    0, 0);
+                        }
+                        Intent intent = new Intent (v.getContext(), NotificationHandler.class);
+                        v.getContext().startActivity(intent);
+                        Activity activity = (Activity) v.getContext();
+                        activity.finish();
+
                     }
                 });
 
