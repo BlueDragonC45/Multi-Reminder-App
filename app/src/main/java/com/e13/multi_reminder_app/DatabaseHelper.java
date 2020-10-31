@@ -85,7 +85,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2, attachment);
         contentValues.put(COL_3, this_week_flag);
         contentValues.put(COL_4, 0);
-        System.out.println(Arrays.toString(makeByte(reminder)));
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -116,10 +115,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Integer deleteData (int id) {
+    public Integer deleteData(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Integer integer= db.delete(TABLE_NAME, "ID = ?", new String[] { String.valueOf(id) });
-        return integer;
+        return db.delete(TABLE_NAME, "ID = ?", new String[] { String.valueOf(id) });
     }
 
     public Reminder getById(int id) throws  IndexOutOfBoundsException{   //This will have to be modified for attachments

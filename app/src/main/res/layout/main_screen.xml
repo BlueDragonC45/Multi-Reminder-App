@@ -23,10 +23,18 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/activeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="175dp"
+                android:text="@string/active"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
                 android:id="@+id/macroButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="225dp"
+                android:layout_marginTop="25dp"
                 android:text="@string/macro"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,14 +77,6 @@
                 android:layout_marginTop="10dp"
                 android:text="Temp button delete"
                 app:layout_constraintTop_toBottomOf="@+id/viewAll" />
-
-            <Button
-                android:id="@+id/createnotif"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Temp button notif"
-                app:layout_constraintTop_toBottomOf="@+id/delete" />
 
         </LinearLayout>
 

@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.e13.multi_reminder_app.RecyclerViewParts.ManageActiveReminders;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainPageActivity extends AppCompatActivity {
@@ -35,13 +36,20 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
 
+        final Button active = findViewById(R.id.activeButton);
         final Button macro = findViewById(R.id.macroButton);
         final Button meso = findViewById(R.id.mesoButton);
         final Button micro = findViewById(R.id.microButton);
         final Button newReminder = findViewById(R.id.newReminder1);
         final Button temp = findViewById(R.id.viewAll);
         final Button temp2 = findViewById(R.id.delete);
-        final Button temp3 = findViewById(R.id.createnotif);
+
+        active.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainPageActivity.this, ManageActiveReminders.class));
+            }
+        });
 
         macro.setOnClickListener(new View.OnClickListener() {
             @Override
