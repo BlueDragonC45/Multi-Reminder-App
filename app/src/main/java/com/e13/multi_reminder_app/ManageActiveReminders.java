@@ -1,4 +1,4 @@
-package com.e13.multi_reminder_app.RecyclerViewParts;
+package com.e13.multi_reminder_app;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,7 +20,9 @@ import com.e13.multi_reminder_app.DatabaseHelper;
 import com.e13.multi_reminder_app.HelperMethods;
 import com.e13.multi_reminder_app.MacroActivity;
 import com.e13.multi_reminder_app.R;
+import com.e13.multi_reminder_app.RecyclerViewParts.RecyclerViewAdapterActive;
 import com.e13.multi_reminder_app.Reminder;
+import com.e13.multi_reminder_app.triplicate;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.DateFormat;
@@ -89,9 +91,7 @@ public class ManageActiveReminders extends AppCompatActivity {
 
     private void initList() {
         ArrayList<String> dataList = new ArrayList<>();
-        ArrayList<Reminder> sorter = new ArrayList<>();
-        ArrayList<Integer> ids = new ArrayList<>();
-        ArrayList<Integer> active = new ArrayList<>();
+        ArrayList<triplicate> sorter = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
@@ -100,24 +100,22 @@ public class ManageActiveReminders extends AppCompatActivity {
 
         } else {
             while (res.moveToNext()) {
-                sorter.add( (Reminder) dbHelper.readByte(res.getBlob(1)));
-                ids.add(res.getInt(0));
-                active.add(res.getInt(4));
+                sorter.add(new triplicate( (Reminder) dbHelper.readByte(res.getBlob(1)), res.getInt(0), res.getInt(4)));
+                sorter.sort(null);
             }
-            sorter.sort(null);
             for (int i = 0; i < sorter.size(); i++) {
-                Reminder reminder = sorter.get(i);
-                if (active.get(i) == 1) {
+                Reminder reminder = sorter.get(i).reminder;
+                if (sorter.get(i).thisWeekOrActive == 1) {
                     calendar.setTimeInMillis(reminder.timeUntil);
                     String priority = helper.getPriority(reminder.priority);
                     String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                            + reminder.frequency + "," + ids.get(i) + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
+                            + reminder.frequency + "," + sorter.get(i).id + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
                     dataList.add(msg);
                 }
             }
         }
         if (dataList.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No active reminders to show", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
         }
         addAll(dataList);
     }

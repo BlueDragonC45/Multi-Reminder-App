@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.e13.multi_reminder_app.RecyclerViewParts.ManageActiveReminders;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainPageActivity extends AppCompatActivity {

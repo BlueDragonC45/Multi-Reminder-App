@@ -97,8 +97,7 @@ public class MesoActivity extends AppCompatActivity {
 
     private void initList() {
         ArrayList<String> dataList = new ArrayList<>();
-        ArrayList<Reminder> sorter = new ArrayList<>();
-        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<triplicate> sorter = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
@@ -107,17 +106,16 @@ public class MesoActivity extends AppCompatActivity {
 
         } else {
             while (res.moveToNext()) {
-                sorter.add( (Reminder) dbHelper.readByte(res.getBlob(1)));
-                ids.add(res.getInt(0));
+                sorter.add(new triplicate( (Reminder) dbHelper.readByte(res.getBlob(1)), res.getInt(0), -1));
                 sorter.sort(null);
             }
             for (int i = 0; i < sorter.size(); i++) {
-                Reminder reminder = sorter.get(i);
-                if (reminder.tier.equals("MESO")) {
+                Reminder reminder = sorter.get(i).reminder;
+                if (sorter.get(i).reminder.tier.equals("MESO")) {
                     calendar.setTimeInMillis(reminder.timeUntil);
                     String priority = helper.getPriority(reminder.priority);
                     String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                            + reminder.frequency + "," + ids.get(i) + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
+                            + reminder.frequency + "," + sorter.get(i).id + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
                     dataList.add(msg);
                 }
             }

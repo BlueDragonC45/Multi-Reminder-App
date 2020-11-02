@@ -4,9 +4,27 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.e13.multi_reminder_app.RecyclerViewParts.ManageActiveReminders;
+import com.e13.multi_reminder_app.ManageActiveReminders;
 
 import java.util.Calendar;
+
+class triplicate implements Comparable<triplicate>{
+
+    Reminder reminder;
+    int id;
+    int thisWeekOrActive;
+
+    public triplicate(Reminder reminder, int id, int thisWeekOrActive) {
+        this.reminder = reminder;
+        this.id = id;
+        this.thisWeekOrActive = thisWeekOrActive;
+    }
+
+    @Override
+    public int compareTo(triplicate o) {
+        return reminder.compareTo(o.reminder);
+    }
+}
 
 public class HelperMethods extends AppCompatActivity {
 

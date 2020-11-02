@@ -96,9 +96,7 @@ public class comingUpActivity extends AppCompatActivity {
 
     private void initList() {
         ArrayList<String> dataList = new ArrayList<>();
-        ArrayList<Reminder> sorter = new ArrayList<>();
-        ArrayList<Integer> ids = new ArrayList<>();
-        ArrayList<Integer> thisWeek = new ArrayList<>();
+        ArrayList<triplicate> sorter = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
@@ -107,18 +105,16 @@ public class comingUpActivity extends AppCompatActivity {
 
         } else {
             while (res.moveToNext()) {
-                sorter.add( (Reminder) dbHelper.readByte(res.getBlob(1)));
-                ids.add(res.getInt(0));
-                thisWeek.add(res.getInt(3));
+                sorter.add(new triplicate( (Reminder) dbHelper.readByte(res.getBlob(1)), res.getInt(0), res.getInt(3)));
                 sorter.sort(null);
             }
             for (int i = 0; i < sorter.size(); i++) {
-                Reminder reminder =sorter.get(i);
-                if (thisWeek.get(i) == 1) {
+                Reminder reminder = sorter.get(i).reminder;
+                if (sorter.get(i).thisWeekOrActive == 1) {
                     calendar.setTimeInMillis(reminder.timeUntil);
                     String priority = helper.getPriority(reminder.priority);
                     String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                            + reminder.frequency + "," + ids.get(i) + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
+                            + reminder.frequency + "," + sorter.get(i).id + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
                     dataList.add(msg);
                 }
             }
