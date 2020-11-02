@@ -12,4 +12,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="testStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#DC3B72</item>
+        <item name="colorPrimaryDark">#A3160C</item>
+        <item name="colorAccent">#C7D547</item>
+    </style>
+
 </resources>
