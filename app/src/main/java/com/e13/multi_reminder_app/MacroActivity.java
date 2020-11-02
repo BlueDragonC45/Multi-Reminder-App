@@ -10,18 +10,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.e13.multi_reminder_app.RecyclerViewParts.RecyclerViewAdapterInactive;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class MacroActivity extends AppCompatActivity {
 
+    HelperMethods helper = new HelperMethods();
+    DatabaseHelper dbHelper = new DatabaseHelper(this);
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ArrayList<String> macroReminders = new ArrayList<>();
@@ -61,9 +69,9 @@ public class MacroActivity extends AppCompatActivity {
             }
         });
 
+        adapter = new RecyclerViewAdapterInactive(macroReminders, this);
         initList();
         RecyclerView recyclerView = findViewById(R.id.recycler_view_macro);
-        adapter = new RecyclerViewAdapterInactive(macroReminders, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -76,22 +84,46 @@ public class MacroActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
     public void addAll(ArrayList<String> list){
         macroReminders.clear();
         macroReminders.addAll(list);
+
         adapter.notifyDataSetChanged();
     }
 
     private void initList() {
         ArrayList<String> dataList = new ArrayList<>();
+        ArrayList<Reminder> sorter = new ArrayList<>();
+        ArrayList<Integer> ids = new ArrayList<>();
+        Cursor res = dbHelper.getAllData();
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
+        if(res.getCount() == 0) {
 
-
+        } else {
+            while (res.moveToNext()) {
+                sorter.add( (Reminder) dbHelper.readByte(res.getBlob(1)));
+                ids.add(res.getInt(0));
+                sorter.sort(null);
+            }
+            for (int i = 0; i < sorter.size(); i++) {
+                Reminder reminder =sorter.get(i);
+                if (reminder.tier.equals("MACRO")) {
+                    calendar.setTimeInMillis(reminder.timeUntil);
+                    String priority = helper.getPriority(reminder.priority);
+                    String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
+                            + reminder.frequency + "," + ids.get(i) + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
+                    dataList.add(msg);
+                }
+            }
+        }
+        if (dataList.size() == 0) {
+            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
+        }
         addAll(dataList);
     }
 

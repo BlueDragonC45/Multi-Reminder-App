@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="80dp">
+
+    <ImageView
+        android:id="@+id/priorityImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/greensquare"
+        android:contentDescription="Test"
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/text_value"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:gravity="center_vertical"
         android:text="Test"
         android:textColor="#000000"

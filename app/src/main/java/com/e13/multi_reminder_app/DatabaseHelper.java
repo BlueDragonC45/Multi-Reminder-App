@@ -21,11 +21,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "reminder_table";
     public static final String COL_0 = "id";
     public static final String COL_1 = "reminder";
-//    public static final String COL_1 = "name";
-//    public static final String COL_2 = "time";
-//    public static final String COL_3 = "priority";
-//    public static final String COL_4 = "tier";
-//    public static final String COL_5 = "frequency";
     public static final String COL_2 = "attachment";
     public static final String COL_3 = "this_week_flag";
     public static final String COL_4 = "active";
@@ -75,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertData(Reminder reminder, int attachment) {
         SQLiteDatabase db = this.getWritableDatabase();
         int this_week_flag;
-        if (reminder.timeUntil < 604800001) {
+        if ((reminder.timeUntil-System.currentTimeMillis()) < 604800001) {
             this_week_flag = 1;
         } else {
             this_week_flag = 0;
@@ -85,18 +80,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2, attachment);
         contentValues.put(COL_3, this_week_flag);
         contentValues.put(COL_4, 0);
-        System.out.println(Arrays.toString(makeByte(reminder)));
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
-//        db.close();
         return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
-//        db.close();
         return res;
     }
 
@@ -115,15 +107,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_3, this_week_flag);
         contentValues.put(COL_4, active);
         db.update(TABLE_NAME, contentValues, "ID = ?", new String[] { String.valueOf(id) });
-//        db.close();
         return true;
     }
 
-    public Integer deleteData (int id) {
+    public Integer deleteData(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Integer integer= db.delete(TABLE_NAME, "ID = ?", new String[] { String.valueOf(id) });
-//        db.close();
-        return integer;
+        return db.delete(TABLE_NAME, "ID = ?", new String[] { String.valueOf(id) });
     }
 
     public Reminder getById(int id) throws  IndexOutOfBoundsException{   //This will have to be modified for attachments

@@ -6,8 +6,8 @@
             android:title="@string/comingUpTab"
             android:id="@+id/comingUpTabDrawer"/>
         <item
-            android:title="@string/newReminder"
-            android:id="@+id/newReminderDrawer"/>
+            android:title="@string/active"
+            android:id="@+id/activeReminderDrawer"/>
         <item
             android:title="@string/macro"
             android:id="@+id/macroButtonDrawer"/>
@@ -17,6 +17,9 @@
         <item
             android:title="@string/micro"
             android:id="@+id/microButtonDrawer"/>
+        <item
+            android:title="@string/newReminder"
+            android:id="@+id/newReminderDrawer"/>
         <item
             android:title="@string/settings"
             android:id="@+id/settings"/>

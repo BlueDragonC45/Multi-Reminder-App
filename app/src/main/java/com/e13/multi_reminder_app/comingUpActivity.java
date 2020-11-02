@@ -1,13 +1,14 @@
-package com.e13.multi_reminder_app.RecyclerViewParts;
+package com.e13.multi_reminder_app;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,11 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.e13.multi_reminder_app.DatabaseHelper;
-import com.e13.multi_reminder_app.HelperMethods;
-import com.e13.multi_reminder_app.MacroActivity;
-import com.e13.multi_reminder_app.R;
-import com.e13.multi_reminder_app.Reminder;
+import com.e13.multi_reminder_app.RecyclerViewParts.RecyclerViewAdapterInactive;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.DateFormat;
@@ -29,19 +26,28 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ManageActiveReminders extends AppCompatActivity {
+public class comingUpActivity extends AppCompatActivity {
 
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private ArrayList<String> activeReminders = new ArrayList<>();
-    RecyclerViewAdapterActive adapter;
+    private ArrayList<String> thisWeekReminders = new ArrayList<>();
+    RecyclerViewAdapterInactive adapter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.active_list);
+        setContentView(R.layout.comingup_list);
+
+        final Button newReminder =  findViewById(R.id.newReminder5);
+
+        newReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(comingUpActivity.this, ReminderCreationActivity.class));
+            }
+        });
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,14 +64,14 @@ public class ManageActiveReminders extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 drawerLayout.closeDrawers();
-                startActivity(new Intent(ManageActiveReminders.this, helper.helpingNavOnClick(item)));
+                startActivity(new Intent(comingUpActivity.this, helper.helpingNavOnClick(item)));
                 return true;
             }
         });
 
-        adapter = new RecyclerViewAdapterActive(activeReminders, this);
+        adapter = new RecyclerViewAdapterInactive(thisWeekReminders, this);
         initList();
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_active);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_thisWeek);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -82,8 +88,9 @@ public class ManageActiveReminders extends AppCompatActivity {
     }
 
     public void addAll(ArrayList<String> list){
-        activeReminders.clear();
-        activeReminders.addAll(list);
+        thisWeekReminders.clear();
+        thisWeekReminders.addAll(list);
+
         adapter.notifyDataSetChanged();
     }
 
@@ -91,7 +98,7 @@ public class ManageActiveReminders extends AppCompatActivity {
         ArrayList<String> dataList = new ArrayList<>();
         ArrayList<Reminder> sorter = new ArrayList<>();
         ArrayList<Integer> ids = new ArrayList<>();
-        ArrayList<Integer> active = new ArrayList<>();
+        ArrayList<Integer> thisWeek = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
@@ -102,12 +109,12 @@ public class ManageActiveReminders extends AppCompatActivity {
             while (res.moveToNext()) {
                 sorter.add( (Reminder) dbHelper.readByte(res.getBlob(1)));
                 ids.add(res.getInt(0));
-                active.add(res.getInt(4));
+                thisWeek.add(res.getInt(3));
+                sorter.sort(null);
             }
-            sorter.sort(null);
             for (int i = 0; i < sorter.size(); i++) {
-                Reminder reminder = sorter.get(i);
-                if (active.get(i) == 1) {
+                Reminder reminder =sorter.get(i);
+                if (thisWeek.get(i) == 1) {
                     calendar.setTimeInMillis(reminder.timeUntil);
                     String priority = helper.getPriority(reminder.priority);
                     String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
@@ -117,11 +124,10 @@ public class ManageActiveReminders extends AppCompatActivity {
             }
         }
         if (dataList.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No active reminders to show", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
         }
         addAll(dataList);
     }
-
 
 }
 

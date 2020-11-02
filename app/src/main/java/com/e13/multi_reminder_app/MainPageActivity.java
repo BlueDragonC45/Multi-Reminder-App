@@ -20,11 +20,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.e13.multi_reminder_app.RecyclerViewParts.ManageActiveReminders;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainPageActivity extends AppCompatActivity {
 
-    HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -35,13 +35,28 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
 
+        final Button active = findViewById(R.id.activeButton);
+        final Button comingUp = findViewById(R.id.comingUpButton);
         final Button macro = findViewById(R.id.macroButton);
         final Button meso = findViewById(R.id.mesoButton);
         final Button micro = findViewById(R.id.microButton);
         final Button newReminder = findViewById(R.id.newReminder1);
         final Button temp = findViewById(R.id.viewAll);
         final Button temp2 = findViewById(R.id.delete);
-        final Button temp3 = findViewById(R.id.createnotif);
+
+        active.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainPageActivity.this, ManageActiveReminders.class));
+            }
+        });
+
+        comingUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainPageActivity.this, comingUpActivity.class));
+            }
+        });
 
         macro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +99,7 @@ public class MainPageActivity extends AppCompatActivity {
                     buffer.append("Id: " + res.getInt(0) + "\n");
                     buffer.append("Reminder: " + (dbHelper.readByte(res.getBlob(1))).toString() + "\n");
                     buffer.append("This week: " + res.getInt(3) + "\n");
+                    buffer.append("Active: " + res.getInt(4) + "\n");
                 }
                 showMessage("Reminders", buffer.toString());
             }
