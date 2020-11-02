@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_mra"
         android:supportsRtl="true"
         android:theme="@style/testStyle">
+        <activity android:name=".RecyclerViewParts.ManageActiveReminders" />
+        <activity android:name=".comingUpActivity" />
         <activity android:name=".NotificationHandler" />
         <activity android:name=".ReminderCreationActivity" />
         <activity android:name=".MicroActivity" />
