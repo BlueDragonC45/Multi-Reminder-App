@@ -25,7 +25,6 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainPageActivity extends AppCompatActivity {
 
-    HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -37,6 +36,7 @@ public class MainPageActivity extends AppCompatActivity {
         setContentView(R.layout.main_screen);
 
         final Button active = findViewById(R.id.activeButton);
+        final Button comingUp = findViewById(R.id.comingUpButton);
         final Button macro = findViewById(R.id.macroButton);
         final Button meso = findViewById(R.id.mesoButton);
         final Button micro = findViewById(R.id.microButton);
@@ -48,6 +48,13 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainPageActivity.this, ManageActiveReminders.class));
+            }
+        });
+
+        comingUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainPageActivity.this, comingUpActivity.class));
             }
         });
 

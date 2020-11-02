@@ -12,8 +12,8 @@ public class HelperMethods extends AppCompatActivity {
 
     public Class helpingNavOnClick(MenuItem item) {
         switch (item.getItemId()) {
-//                    case R.id.comingUpTabDrawer:
-//                        return coming_up_activity.class;
+            case R.id.comingUpTabDrawer:
+                return comingUpActivity.class;
             case R.id.activeReminderDrawer:
                 return ManageActiveReminders.class;
             case R.id.macroButtonDrawer:

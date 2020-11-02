@@ -23,5 +23,6 @@
     <string name="micro">Micro Reminders</string>
     <string name="settings">Settings</string>
     <string name="active">Active Reminders</string>
+    <string name="comingUp">This week</string>
 
 </resources>
