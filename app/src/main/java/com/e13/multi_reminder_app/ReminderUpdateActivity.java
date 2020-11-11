@@ -33,6 +33,7 @@ public class ReminderUpdateActivity extends AppCompatActivity {
         setContentView(R.layout.reminder_creation);
 
         final Reminder oldReminder = (Reminder) dbHelper.readByte(getIntent().getByteArrayExtra("oldReminder"));
+        final int id = getIntent().getIntExtra("id", 0);
         oldName = oldReminder.name;
         oldTimeUntil = oldReminder.timeUntil;
         oldPriority = oldReminder.priority;
@@ -48,14 +49,15 @@ public class ReminderUpdateActivity extends AppCompatActivity {
             }
         });
 
-        final Button createReminder = findViewById(R.id.nr_create);
+        final Button updateReminder = findViewById(R.id.nr_create);
         final EditText name = findViewById(R.id.editTextName);
         final DatePicker datePicker = findViewById(R.id.createAlarm_datePicker);
         final TimePicker timePicker = findViewById(R.id.createAlarm_timePicker);
+        updateReminder.setText("Update Reminder");
 
         initUpdate();
 
-        createReminder.setOnClickListener(new View.OnClickListener() {
+        updateReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long timeUntil = helper.getTimeUntil(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
@@ -76,12 +78,12 @@ public class ReminderUpdateActivity extends AppCompatActivity {
                     return;
                 }
                 Reminder rmd = new Reminder(name.getText().toString(), timeUntil, priority, tier, frequency);
-                if (dbHelper.insertData(rmd, 0)) {
-                    Toast.makeText(getApplicationContext(), "Reminder " + rmd.name + " added!", Toast.LENGTH_LONG).show();
+                if (dbHelper.updateData(id, rmd, 0, dbHelper.isActive(rmd))) {
+                    Toast.makeText(getApplicationContext(), "Reminder " + rmd.name + " updated!", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Reminder not added!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Reminder not updated!", Toast.LENGTH_LONG).show();
                 }
-                startActivity(new Intent(ReminderUpdateActivity.this, NotificationHandler.class));
+                startService(new Intent(ReminderUpdateActivity.this, NotificationHandler.class));
                 finish();
             }
         });
@@ -144,6 +146,9 @@ public class ReminderUpdateActivity extends AppCompatActivity {
         updateRadioButtonsInt(oldPriority);
         updateRadioButtons(oldTier);
         updateRadioButtons(oldFrequency);
+        priority = oldPriority;
+        tier = oldTier;
+        frequency = oldFrequency;
     }
 
     private void updateRadioButtonsInt(int num) {

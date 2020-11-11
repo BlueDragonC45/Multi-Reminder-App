@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.e13.multi_reminder_app">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -9,9 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_mra"
         android:supportsRtl="true"
         android:theme="@style/testStyle">
+
+        <service android:name=".NotificationHandler" />
         <activity android:name=".ManageActiveReminders" />
         <activity android:name=".comingUpActivity" />
-        <activity android:name=".NotificationHandler" />
         <activity android:name=".ReminderCreationActivity" />
         <activity android:name=".ReminderUpdateActivity" />
         <activity android:name=".MicroActivity" />

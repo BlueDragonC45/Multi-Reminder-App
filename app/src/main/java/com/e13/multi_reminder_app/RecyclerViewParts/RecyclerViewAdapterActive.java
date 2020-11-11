@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.e13.multi_reminder_app.DatabaseHelper;
 import com.e13.multi_reminder_app.HelperMethods;
+import com.e13.multi_reminder_app.ManageActiveReminders;
 import com.e13.multi_reminder_app.NotificationHandler;
 import com.e13.multi_reminder_app.R;
 import com.e13.multi_reminder_app.Reminder;
@@ -69,9 +70,11 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
                             dbHelper.updateData(Integer.parseInt(str[4]), new Reminder(str[0], newTime, Integer.parseInt(str[6]), str[7], str[3]),
                                     0, 0);
                         }
-                        Intent intent = new Intent (v.getContext(), NotificationHandler.class);
-                        v.getContext().startActivity(intent);
+                        Intent intent = new Intent (v.getContext(), ManageActiveReminders.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         Activity activity = (Activity) v.getContext();
+                        v.getContext().startActivity(intent);
+                        v.getContext().startService(new Intent(v.getContext(), NotificationHandler.class));
                         activity.finish();
 
                     }
@@ -82,9 +85,11 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
                     public void onClick(DialogInterface dialog, int which) {
                         dbHelper.updateData(Integer.parseInt(str[4]), new Reminder(str[0], Long.parseLong(str[5]) + 300000, Integer.parseInt(str[6]), str[7], str[3]),
                                 0, 0);
-                        Intent intent = new Intent (v.getContext(), NotificationHandler.class);
-                        v.getContext().startActivity(intent);
+                        Intent intent = new Intent (v.getContext(), v.getClass());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         Activity activity = (Activity) v.getContext();
+                        v.getContext().startActivity(intent);
+                        v.getContext().startService(new Intent(v.getContext(), NotificationHandler.class));
                         activity.finish();
                     }
                 });

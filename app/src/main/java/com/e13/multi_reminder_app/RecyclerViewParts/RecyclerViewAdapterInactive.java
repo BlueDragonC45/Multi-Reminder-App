@@ -73,6 +73,7 @@ public class RecyclerViewAdapterInactive extends RecyclerView.Adapter<RecyclerVi
                                 Intent intent = new Intent (v.getContext(), MacroActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 v.getContext().startActivity(intent);
+                                v.getContext().startService(new Intent(v.getContext(), NotificationHandler.class));
                                 Activity activity = (Activity) v.getContext();
                                 activity.finish();
                             }
@@ -87,6 +88,7 @@ public class RecyclerViewAdapterInactive extends RecyclerView.Adapter<RecyclerVi
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent (v.getContext(), ReminderUpdateActivity.class);
                         intent.putExtra("oldReminder", dbHelper.makeByte(dbHelper.getById(Integer.parseInt(str[4]))));
+                        intent.putExtra("id", Integer.parseInt(str[4]));
                         v.getContext().startActivity(intent);
                         Activity activity = (Activity) v.getContext();
                         activity.finish();

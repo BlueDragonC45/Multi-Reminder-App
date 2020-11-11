@@ -125,4 +125,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         throw new IndexOutOfBoundsException("Id not found");
     }
 
+    public int isActive(Reminder reminder) {
+        if ((reminder.timeUntil - System.currentTimeMillis()) < 10000) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
 }

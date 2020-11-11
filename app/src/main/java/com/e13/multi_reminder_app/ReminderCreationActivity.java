@@ -65,7 +65,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Reminder not added!", Toast.LENGTH_LONG).show();
                 }
-                startActivity(new Intent(ReminderCreationActivity.this, NotificationHandler.class));
+                startService(new Intent(ReminderCreationActivity.this, NotificationHandler.class));
                 finish();
             }
         });

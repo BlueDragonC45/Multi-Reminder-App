@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,25 +12,41 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
-public class NotificationHandler extends AppCompatActivity {
+class workerThread extends Thread {
 
-    DatabaseHelper dbHelper = new DatabaseHelper(this);
+    Context context;
+    DatabaseHelper dbHelper;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.thinking_screen);
+    workerThread(Context context) {
+        this.context = context;
+        dbHelper = new DatabaseHelper(context);
+    }
 
+    @Override
+    public void run() {
+        do {
+            long timeTil = checkReminders();
+            if (timeTil != 0) {
+                timer(timeTil);
+            } else {
+                this.interrupt();
+            }
+        } while (!this.isInterrupted());
+    }
+
+    private long checkReminders() {
         Reminder firstReminder = null;
         boolean active = false;
         boolean empty = false;
         long lowestTime = Long.MAX_VALUE;
         Cursor res = dbHelper.getAllData();
-
 
         while (res.moveToNext()) {
             if(res.getCount() == 0) {
@@ -37,7 +54,7 @@ public class NotificationHandler extends AppCompatActivity {
                 break;
             } else {
                 Reminder reminder = (Reminder) dbHelper.readByte(res.getBlob(1));
-                if ((reminder.timeUntil - System.currentTimeMillis()) < 10000) {
+                if (dbHelper.isActive(reminder) == 1) {
                     active = true;
                     dbHelper.updateData(res.getInt(0), reminder, res.getInt(3), 1);
                     firstReminder = reminder;
@@ -50,51 +67,86 @@ public class NotificationHandler extends AppCompatActivity {
                 }
             }
         }
-        Intent intent = new Intent(NotificationHandler.this, NotificationHandler.class);
         if (active && firstReminder != null) {
             createNotification("Active reminder", "Reminder " + firstReminder.name + " is active");
-            createDelayedIntent(intent, 30000);
-            finish();
+            return 30000;
         } else if (!empty) {
-            createDelayedIntent(intent, lowestTime);
-            startActivity(new Intent(NotificationHandler.this, MainPageActivity.class));
-            finish();
+            return lowestTime;
         } else {
-            startActivity(new Intent(NotificationHandler.this, MainPageActivity.class));
-            finish();
+            return 0;
         }
     }
 
-    public void createDelayedIntent(final Intent intent, long time) {
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                startActivity(intent);
-            }
-        };
-
-        Handler h = new Handler();
-        h.postDelayed(r, time);
+    public void timer(long ms) {
+        try {
+            sleep(ms);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public void createNotification(String title, String message) {
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel channel = new NotificationChannel("Reminder", "Reminders", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel = new NotificationChannel("Reminder", "Reminders", NotificationManager.IMPORTANCE_HIGH);
         channel.enableVibration(true);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         manager.createNotificationChannel(channel);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "Reminder")
-            .setSmallIcon(R.mipmap.ic_launcher_mra)
-            .setContentTitle(title)
-            .setContentText(message);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Reminder")
+                .setSmallIcon(R.mipmap.ic_launcher_mra)
+                .setContentTitle(title)
+                .setContentText(message);
 
-        Intent notifIntent = new Intent(this, NotificationHandler.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent notifIntent = new Intent(context, NotificationHandler.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notifIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
 
 
         manager.notify(0, builder.build());
+    }
+
+}
+
+public class NotificationHandler extends Service {
+
+    workerThread thread;
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    public void onCreate() {
+        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel = new NotificationChannel("BRN", "App running in the background", NotificationManager.IMPORTANCE_LOW);
+        channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+        manager.createNotificationChannel(channel);
+
+        Intent notificationIntent = new Intent(this, NotificationHandler.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        Notification notification =
+                new Notification.Builder(this, "BRN")
+                        .setContentTitle("MultiReminder app is running")
+                        .setSmallIcon(R.mipmap.ic_launcher_mra)
+                        .setContentIntent(pendingIntent)
+                        .build();
+
+        startForeground(120, notification);
+    }
+
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (thread == null) {
+            thread = new workerThread(this);
+            thread.start();
+        } else if (thread.isAlive() || thread.getState().equals(Thread.State.TIMED_WAITING)) {
+            thread.interrupt();
+            thread = new workerThread(this);
+            thread.start();
+        }
+        return START_STICKY;
     }
 
 }
