@@ -13,6 +13,7 @@
         <activity android:name=".comingUpActivity" />
         <activity android:name=".NotificationHandler" />
         <activity android:name=".ReminderCreationActivity" />
+        <activity android:name=".ReminderUpdateActivity" />
         <activity android:name=".MicroActivity" />
         <activity android:name=".MesoActivity" />
         <activity android:name=".MacroActivity" />

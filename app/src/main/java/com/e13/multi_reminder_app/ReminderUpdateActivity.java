@@ -1,29 +1,43 @@
 package com.e13.multi_reminder_app;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.RadioButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class ReminderCreationActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Calendar;
+
+public class ReminderUpdateActivity extends AppCompatActivity {
 
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
+    private String oldName;
+    private long oldTimeUntil;
     private int priority = -1;
+    private int oldPriority = -1;
     private String tier;
+    private String oldTier;
     private String frequency;
+    private String oldFrequency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_creation);
+
+        final Reminder oldReminder = (Reminder) dbHelper.readByte(getIntent().getByteArrayExtra("oldReminder"));
+        oldName = oldReminder.name;
+        oldTimeUntil = oldReminder.timeUntil;
+        oldPriority = oldReminder.priority;
+        oldTier = oldReminder.tier;
+        oldFrequency = oldReminder.frequency;
 
         final Button viewReminder = findViewById(R.id.nr_cancel);
 
@@ -38,6 +52,8 @@ public class ReminderCreationActivity extends AppCompatActivity {
         final EditText name = findViewById(R.id.editTextName);
         final DatePicker datePicker = findViewById(R.id.createAlarm_datePicker);
         final TimePicker timePicker = findViewById(R.id.createAlarm_timePicker);
+
+        initUpdate();
 
         createReminder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +81,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Reminder not added!", Toast.LENGTH_LONG).show();
                 }
-                startActivity(new Intent(ReminderCreationActivity.this, NotificationHandler.class));
+                startActivity(new Intent(ReminderUpdateActivity.this, NotificationHandler.class));
                 finish();
             }
         });
@@ -111,6 +127,79 @@ public class ReminderCreationActivity extends AppCompatActivity {
                 break;
             case R.id.radioMonth:
                 frequency = "Monthly";
+                break;
+        }
+    }
+
+    public void initUpdate() {
+        EditText updName = findViewById(R.id.editTextName);
+        DatePicker updDatePicker = findViewById(R.id.createAlarm_datePicker);
+        TimePicker updTimePicker = findViewById(R.id.createAlarm_timePicker);
+        updName.setText(oldName);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(oldTimeUntil);
+        updDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        updTimePicker.setHour(calendar.get(Calendar.HOUR_OF_DAY));
+        updTimePicker.setMinute(calendar.get(Calendar.MINUTE));
+        updateRadioButtonsInt(oldPriority);
+        updateRadioButtons(oldTier);
+        updateRadioButtons(oldFrequency);
+    }
+
+    private void updateRadioButtonsInt(int num) {
+        final RadioButton rUrgent = findViewById(R.id.radioUrgent);
+        final RadioButton rHigh = findViewById(R.id.radioHigh);
+        final RadioButton rMedium = findViewById(R.id.radioMed);
+        final RadioButton rLow = findViewById(R.id.radioLow);
+        switch (num) {
+            case 4:
+                rUrgent.toggle();
+                break;
+            case 3:
+                rHigh.toggle();
+                break;
+            case 2:
+                rMedium.toggle();
+                break;
+            case 1:
+                rLow.toggle();
+                break;
+        }
+    }
+
+    private void updateRadioButtons(String str) {
+        final RadioButton rMacro = findViewById(R.id.radioMacro);
+        final RadioButton rMeso = findViewById(R.id.radioMeso);
+        final RadioButton rMicro = findViewById(R.id.radioMicro);
+        final RadioButton rNever = findViewById(R.id.radioNever);
+        final RadioButton rHourly = findViewById(R.id.radioHour);
+        final RadioButton rDaily = findViewById(R.id.radioDay);
+        final RadioButton rWeekly = findViewById(R.id.radioWeek);
+        final RadioButton rMonthly = findViewById(R.id.radioMonth);
+        switch (str) {
+            case "MACRO":
+                rMacro.toggle();
+                break;
+            case "MESO":
+                rMeso.toggle();
+                break;
+            case "MICRO":
+                rMicro.toggle();
+                break;
+            case "Never":
+                rNever.toggle();
+                break;
+            case "Hourly":
+                rHourly.toggle();
+                break;
+            case "Daily":
+                rDaily.toggle();
+                break;
+            case "Weekly":
+                rWeekly.toggle();
+                break;
+            case "Monthly":
+                rMonthly.toggle();
                 break;
         }
     }

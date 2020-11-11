@@ -119,7 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = getAllData();
         while (res.moveToNext()) {
             if (id == res.getInt(0)) {
-                return (Reminder) readByte(res.getBlob(2));
+                return (Reminder) readByte(res.getBlob(1));
             }
         }
         throw new IndexOutOfBoundsException("Id not found");

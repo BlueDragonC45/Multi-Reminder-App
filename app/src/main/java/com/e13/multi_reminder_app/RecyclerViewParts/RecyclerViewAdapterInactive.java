@@ -21,6 +21,7 @@ import com.e13.multi_reminder_app.HelperMethods;
 import com.e13.multi_reminder_app.MacroActivity;
 import com.e13.multi_reminder_app.NotificationHandler;
 import com.e13.multi_reminder_app.R;
+import com.e13.multi_reminder_app.ReminderUpdateActivity;
 
 import java.util.ArrayList;
 
@@ -78,6 +79,17 @@ public class RecyclerViewAdapterInactive extends RecyclerView.Adapter<RecyclerVi
                         });
                         AlertDialog confirmAlert = confirm.create();
                         confirmAlert.show();
+                    }
+                });
+
+                builder.setNegativeButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent (v.getContext(), ReminderUpdateActivity.class);
+                        intent.putExtra("oldReminder", dbHelper.makeByte(dbHelper.getById(Integer.parseInt(str[4]))));
+                        v.getContext().startActivity(intent);
+                        Activity activity = (Activity) v.getContext();
+                        activity.finish();
                     }
                 });
 
