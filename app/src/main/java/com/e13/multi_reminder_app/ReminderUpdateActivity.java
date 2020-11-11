@@ -53,7 +53,7 @@ public class ReminderUpdateActivity extends AppCompatActivity {
         final EditText name = findViewById(R.id.editTextName);
         final DatePicker datePicker = findViewById(R.id.createAlarm_datePicker);
         final TimePicker timePicker = findViewById(R.id.createAlarm_timePicker);
-        updateReminder.setText("Update Reminder");
+        updateReminder.setText(R.string.update_reminder);
 
         initUpdate();
 

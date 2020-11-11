@@ -92,15 +92,14 @@ class workerThread extends Thread {
         channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         manager.createNotificationChannel(channel);
 
+        Intent notifIntent = new Intent(context, ManageActiveReminders.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notifIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Reminder")
                 .setSmallIcon(R.mipmap.ic_launcher_mra)
                 .setContentTitle(title)
-                .setContentText(message);
-
-        Intent notifIntent = new Intent(context, NotificationHandler.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notifIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-
+                .setContentText(message)
+                .setContentIntent(contentIntent);
 
         manager.notify(0, builder.build());
     }
