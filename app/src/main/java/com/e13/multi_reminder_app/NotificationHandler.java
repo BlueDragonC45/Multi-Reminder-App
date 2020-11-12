@@ -8,21 +8,16 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 class workerThread extends Thread {
 
     Context context;
     DatabaseHelper dbHelper;
+    Settings settings = new Settings();
 
     workerThread(Context context) {
         this.context = context;
@@ -69,7 +64,7 @@ class workerThread extends Thread {
         }
         if (active && firstReminder != null) {
             createNotification("Active reminder", "Reminder " + firstReminder.name + " is active");
-            return 30000;
+            return settings.getActiveDelay();
         } else if (!empty) {
             return lowestTime;
         } else {
@@ -92,7 +87,7 @@ class workerThread extends Thread {
         channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         manager.createNotificationChannel(channel);
 
-        Intent notifIntent = new Intent(context, ManageActiveReminders.class);
+        Intent notifIntent = new Intent(context, ActiveRemindersActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notifIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Reminder")

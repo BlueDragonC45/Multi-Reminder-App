@@ -4,8 +4,6 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.e13.multi_reminder_app.ManageActiveReminders;
-
 import java.util.Calendar;
 
 class triplicate implements Comparable<triplicate>{
@@ -33,7 +31,7 @@ public class HelperMethods extends AppCompatActivity {
             case R.id.comingUpTabDrawer:
                 return comingUpActivity.class;
             case R.id.activeReminderDrawer:
-                return ManageActiveReminders.class;
+                return ActiveRemindersActivity.class;
             case R.id.macroButtonDrawer:
                 return MacroActivity.class;
             case R.id.mesoButtonDrawer:

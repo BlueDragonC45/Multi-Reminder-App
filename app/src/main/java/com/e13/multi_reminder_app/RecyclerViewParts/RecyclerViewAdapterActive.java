@@ -2,7 +2,6 @@ package com.e13.multi_reminder_app.RecyclerViewParts;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,17 +11,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.e13.multi_reminder_app.DatabaseHelper;
 import com.e13.multi_reminder_app.HelperMethods;
-import com.e13.multi_reminder_app.ManageActiveReminders;
+import com.e13.multi_reminder_app.ActiveRemindersActivity;
 import com.e13.multi_reminder_app.NotificationHandler;
 import com.e13.multi_reminder_app.R;
 import com.e13.multi_reminder_app.Reminder;
+import com.e13.multi_reminder_app.Settings;
 
 import java.util.ArrayList;
 
@@ -30,6 +29,7 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
 
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper;
+    Settings settings = new Settings();
     private ArrayList<String> mlist;
     private Context mContext;
 
@@ -70,7 +70,7 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
                             dbHelper.updateData(Integer.parseInt(str[4]), new Reminder(str[0], newTime, Integer.parseInt(str[6]), str[7], str[3]),
                                     0, 0);
                         }
-                        Intent intent = new Intent (v.getContext(), ManageActiveReminders.class);
+                        Intent intent = new Intent (v.getContext(), ActiveRemindersActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         Activity activity = (Activity) v.getContext();
                         v.getContext().startActivity(intent);
@@ -83,7 +83,7 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
                 builder.setNegativeButton("Snooze", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dbHelper.updateData(Integer.parseInt(str[4]), new Reminder(str[0], Long.parseLong(str[5]) + 300000, Integer.parseInt(str[6]), str[7], str[3]),
+                        dbHelper.updateData(Integer.parseInt(str[4]), new Reminder(str[0], Long.parseLong(str[5]) + settings.getSnoozeTime(), Integer.parseInt(str[6]), str[7], str[3]),
                                 0, 0);
                         Intent intent = new Intent (v.getContext(), v.getClass());
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

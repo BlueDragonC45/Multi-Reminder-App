@@ -16,13 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.e13.multi_reminder_app.DatabaseHelper;
-import com.e13.multi_reminder_app.HelperMethods;
-import com.e13.multi_reminder_app.MacroActivity;
-import com.e13.multi_reminder_app.R;
 import com.e13.multi_reminder_app.RecyclerViewParts.RecyclerViewAdapterActive;
-import com.e13.multi_reminder_app.Reminder;
-import com.e13.multi_reminder_app.triplicate;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.DateFormat;
@@ -31,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ManageActiveReminders extends AppCompatActivity {
+public class ActiveRemindersActivity extends AppCompatActivity {
 
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
@@ -60,7 +54,7 @@ public class ManageActiveReminders extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 drawerLayout.closeDrawers();
-                startActivity(new Intent(ManageActiveReminders.this, helper.helpingNavOnClick(item)));
+                startActivity(new Intent(ActiveRemindersActivity.this, helper.helpingNavOnClick(item)));
                 return true;
             }
         });
