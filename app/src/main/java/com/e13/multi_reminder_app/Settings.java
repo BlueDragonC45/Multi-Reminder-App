@@ -10,7 +10,7 @@ public class Settings {
             snoozeTime = 300000;
         }
         if (activeDelay == -1) {
-            activeDelay = 30000;
+            activeDelay = 60000;
         }
     }
 

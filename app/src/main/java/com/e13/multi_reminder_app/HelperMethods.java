@@ -40,8 +40,8 @@ public class HelperMethods extends AppCompatActivity {
                 return MicroActivity.class;
             case R.id.newReminderDrawer:
                 return ReminderCreationActivity.class;
-//                    case R.id.settings:
-//                        return settings.class;
+            case R.id.settings:
+                return SettingsActivity.class;
         }
         return MainPageActivity.class;
     }
