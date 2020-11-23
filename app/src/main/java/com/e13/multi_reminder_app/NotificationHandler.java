@@ -1,5 +1,6 @@
 package com.e13.multi_reminder_app;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,6 +12,7 @@ import android.database.Cursor;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.AlarmManagerCompat;
 import androidx.core.app.NotificationCompat;
 
 class workerThread extends Thread {
@@ -64,6 +66,7 @@ class workerThread extends Thread {
         }
         if (active && firstReminder != null) {
             createNotification("Active reminder", "Reminder " + firstReminder.name + " is active");
+            createAlarm();
             return settings.getActiveDelay();
         } else if (!empty) {
             return lowestTime;
@@ -88,7 +91,7 @@ class workerThread extends Thread {
         manager.createNotificationChannel(channel);
 
         Intent notifIntent = new Intent(context, ActiveRemindersActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notifIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notifIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Reminder")
                 .setSmallIcon(R.mipmap.ic_launcher_mra)
@@ -97,6 +100,17 @@ class workerThread extends Thread {
                 .setContentIntent(contentIntent);
 
         manager.notify(0, builder.build());
+    }
+
+    public void createAlarm() {
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent fullScreenIntent = new Intent(context, SettingsActivity.class);
+        fullScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
+                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManagerCompat.setExactAndAllowWhileIdle(manager, AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1, fullScreenPendingIntent);
     }
 
 }
