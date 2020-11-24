@@ -66,7 +66,7 @@ public class HelperMethods extends AppCompatActivity {
             case 2:
                 return "Medium";
             case 3:
-                return "High";
+            return "High";
             case 4:
                 return  "Urgent";
         }

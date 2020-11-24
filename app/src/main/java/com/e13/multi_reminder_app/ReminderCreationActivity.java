@@ -34,6 +34,15 @@ public class ReminderCreationActivity extends AppCompatActivity {
             }
         });
 
+        final Button addAttachments = findViewById(R.id.addAttachmentButton);
+
+        addAttachments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ReminderCreationActivity.this, AddingAttachmentsActivity.class));
+            }
+        });
+
         final Button createReminder = findViewById(R.id.nr_create);
         final EditText name = findViewById(R.id.editTextName);
         final DatePicker datePicker = findViewById(R.id.createAlarm_datePicker);

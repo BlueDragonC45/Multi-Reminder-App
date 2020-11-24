@@ -15,6 +15,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ActiveRemindersActivity" />
         <activity android:name=".comingUpActivity" />
+        <activity android:name=".AddingAttachmentsActivity" />
         <activity android:name=".ReminderCreationActivity" />
         <activity android:name=".ReminderUpdateActivity" />
         <activity android:name=".MicroActivity" />
