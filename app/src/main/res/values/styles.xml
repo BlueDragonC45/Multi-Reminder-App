@@ -12,10 +12,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    //style (1)
     <style name="testStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#DC3B72</item>
         <item name="colorPrimaryDark">#A3160C</item>
         <item name="colorAccent">#C7D547</item>
     </style>
+
+    //style (2)
+    <style name="Dark" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#2F3DBC</item>
+        <item name="colorPrimaryDark">#151895</item>
+        <item name="colorAccent">#000000</item>
 
 </resources>
