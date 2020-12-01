@@ -115,7 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME, "ID = ?", new String[] { String.valueOf(id) });
     }
 
-    public Reminder getById(int id) throws  IndexOutOfBoundsException{   //This will have to be modified for attachments
+    public Reminder getById(int id) throws IndexOutOfBoundsException{
         Cursor res = getAllData();
         while (res.moveToNext()) {
             if (id == res.getInt(0)) {
@@ -123,6 +123,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         throw new IndexOutOfBoundsException("Id not found");
+    }
+
+    public int getByReminder(Reminder reminder) throws IndexOutOfBoundsException{
+        Cursor res = getAllData();
+        while (res.moveToNext()) {
+            Reminder rmd = (Reminder) readByte(res.getBlob(1));
+            if (reminder.equals(rmd)) {
+                return res.getInt(0);
+            }
+        }
+        throw new IndexOutOfBoundsException("Reminder not found");
+    }
+
+    public int getAttachment(int id) throws  IndexOutOfBoundsException{
+        Cursor res = getAllData();
+        while (res.moveToNext()) {
+            if (id == res.getInt(0)) {
+                return res.getInt(2);
+            }
+        }
+        throw new IndexOutOfBoundsException("Reminder not found");
     }
 
     public int isActive(Reminder reminder) {

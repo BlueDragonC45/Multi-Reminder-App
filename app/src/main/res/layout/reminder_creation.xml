@@ -1,341 +1,455 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ReminderCreationActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:text="Create New Reminder" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/reminderNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Create New Reminder" />
+                    android:layout_marginStart="20dp"
+                    android:text="Reminder Name:"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/reminderNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="Reminder Name:"
-                        android:textColor="#000000"
-                        android:textSize="22sp" />
-
-                    <EditText
-                        android:id="@+id/editTextName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:ems="10"
-                        android:hint="Name"
-                        android:inputType="textShortMessage" />
-                </LinearLayout>
-
-
-
-                <LinearLayout
-                    android:id="@+id/createAlarm_datePickerLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_weight="0.2"
-                        android:text="Date"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="#000000"
-                        android:textSize="22sp" />
-
-                    <DatePicker
-                        android:id="@+id/createAlarm_datePicker"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
-                        android:calendarViewShown="false"
-                        android:datePickerMode="spinner"
-                        android:startYear="2020" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/createAlarm_timePickerLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_weight="0.2"
-                        android:text="Time"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="#000000"
-                        android:textSize="22sp" />
-
-                    <TimePicker
-                        android:id="@+id/createAlarm_timePicker"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.8"
-                        android:layout_height="wrap_content"
-                        android:timePickerMode="spinner" />
-
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp" />
-
-                <LinearLayout
-                    android:id="@+id/createAlarm_priority_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createAlarm_priority"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="0.4"
-                        android:text="Priority:"
-                        android:textColor="#000000"
-                        android:textSize="22sp" />
-
-                    <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_weight="0.6"
-                        android:orientation="vertical">
-
-                        <RadioButton
-                            android:id="@+id/radioUrgent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Urgent"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioHigh"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="High"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioMed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Medium"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioLow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Low"
-                            android:textSize="20sp" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:id="@+id/createAlarm_tier_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createAlarm_tier"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="0.4"
-                        android:text="Tier:"
-                        android:textColor="#000000"
-                        android:textSize="22sp" />
-
-                    <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="30dp"
-                        android:layout_weight="0.6"
-                        android:orientation="vertical">
-
-                        <RadioButton
-                            android:id="@+id/radioMacro"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Macro"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioMeso"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Meso"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioMicro"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Micro"
-                            android:textSize="20sp" />
-                    </RadioGroup>
-
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp" />
-
-                <LinearLayout
-                    android:id="@+id/createAlarm_recurring_options"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createAlarm_frequency"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="0.4"
-                        android:text="Frequency:"
-                        android:textColor="#000000"
-                        android:textSize="22sp" />
-
-                    <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_weight="0.6"
-                        android:orientation="vertical">
-
-                        <RadioButton
-                            android:id="@+id/radioNever"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Never"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioHour"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Hourly"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioDay"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Daily"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioWeek"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Weekly"
-                            android:textSize="20sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioMonth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onClickRadioButton"
-                            android:text="Monthly"
-                            android:textSize="20sp" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp" />
-
-                <Button
-                    android:id="@+id/addAttachmentButton"
+                <EditText
+                    android:id="@+id/editTextName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Add an Attachment"
-                    android:textSize="20sp" />
+                    android:layout_marginStart="20dp"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textShortMessage" />
+            </LinearLayout>
 
-                <Button
-                    android:id="@+id/nr_create"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="5dp"
-                    android:text="Create new reminder"
-                    android:textSize="20sp" />
 
-                <Button
-                    android:id="@+id/nr_cancel"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/createAlarm_datePickerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:text="Cancel"
-                    android:textSize="20sp" />
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="0.2"
+                    android:text="Date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+
+                <DatePicker
+                    android:id="@+id/createAlarm_datePicker"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    android:startYear="2020" />
 
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/createAlarm_timePickerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="0.2"
+                    android:text="Time"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+
+                <TimePicker
+                    android:id="@+id/createAlarm_timePicker"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:timePickerMode="spinner" />
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <LinearLayout
+                android:id="@+id/createAlarm_priority_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/createAlarm_priority"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="0.4"
+                    android:text="Priority:"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+
+                <RadioGroup
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioUrgent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Urgent"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioHigh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="High"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioMed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Medium"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioLow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Low"
+                        android:textSize="20sp" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:id="@+id/createAlarm_tier_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/createAlarm_tier"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="0.4"
+                    android:text="Tier:"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+
+                <RadioGroup
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioMacro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Macro"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioMeso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Meso"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioMicro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Micro"
+                        android:textSize="20sp" />
+                </RadioGroup>
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <LinearLayout
+                android:id="@+id/createAlarm_recurring_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/createAlarm_frequency"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="0.4"
+                    android:text="Frequency:"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+
+                <RadioGroup
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioNever"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Never"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Hourly"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Daily"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioWeek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Weekly"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickRadioButton"
+                        android:text="Monthly"
+                        android:textSize="20sp" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <Button
+                android:id="@+id/addAttachmentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Add an Attachment"
+                android:textSize="20sp" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/ShowSearchFilters"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.15"
+                            android:text="Show Search Filters"
+                            android:textSize="18sp" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxAttachments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/searchFilters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/FilterName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Filter by Name"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/FilterTier"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Filter by Tier"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/FilterPriority"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Filter by Priority"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/editTextSearchName"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.5"
+                                android:ems="10"
+                                android:hint="Reminder name"
+                                android:inputType="textPersonName"
+                                android:textSize="16sp" />
+
+                            <Spinner
+                                android:id="@+id/spinnerTier"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.5" />
+
+                            <Spinner
+                                android:id="@+id/spinnerPriority"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.5" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:id="@+id/currentAttachment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_attachments"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+
+                </LinearLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+            <Button
+                android:id="@+id/nr_create"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:text="Create new reminder"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/nr_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:text="Cancel"
+                android:textSize="20sp" />
+
+
         </LinearLayout>
-    </ScrollView>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</ScrollView>

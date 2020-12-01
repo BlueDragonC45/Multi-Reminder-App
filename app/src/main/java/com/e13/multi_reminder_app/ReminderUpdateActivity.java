@@ -26,6 +26,7 @@ public class ReminderUpdateActivity extends AppCompatActivity {
     private String oldTier;
     private String frequency;
     private String oldFrequency;
+    private int oldAttachment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class ReminderUpdateActivity extends AppCompatActivity {
         oldPriority = oldReminder.priority;
         oldTier = oldReminder.tier;
         oldFrequency = oldReminder.frequency;
+        oldAttachment = oldReminder.attachment;
 
         final Button viewReminder = findViewById(R.id.nr_cancel);
 
@@ -77,8 +79,10 @@ public class ReminderUpdateActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "That date and time has already passed!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Reminder rmd = new Reminder(name.getText().toString(), timeUntil, priority, tier, frequency);
-                if (dbHelper.updateData(id, rmd, 0, dbHelper.isActive(rmd))) {
+                Reminder rmd = new Reminder(name.getText().toString(), timeUntil, priority, tier, frequency, oldAttachment);
+                int attachment;
+                if (rmd.attachment == 0) { attachment = 0; } else { attachment = 1; }
+                if (dbHelper.updateData(id, rmd, attachment, dbHelper.isActive(rmd))) {
                     Toast.makeText(getApplicationContext(), "Reminder " + rmd.name + " updated!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Reminder not updated!", Toast.LENGTH_LONG).show();

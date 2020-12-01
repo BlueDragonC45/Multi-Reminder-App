@@ -6,16 +6,32 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
+class pair implements Comparable<pair> {
+
+    Reminder reminder;
+    int attachment;
+
+    public pair(Reminder reminder, int attachment) {
+        this.reminder = reminder;
+        this.attachment = attachment;
+    }
+
+    @Override
+    public int compareTo(pair o) {
+        return  this.reminder.compareTo(o.reminder);
+    }
+}
+
 class triplicate implements Comparable<triplicate>{
 
     Reminder reminder;
     int id;
-    int thisWeekOrActive;
+    int flag;
 
-    public triplicate(Reminder reminder, int id, int thisWeekOrActive) {
+    public triplicate(Reminder reminder, int id, int flag) {
         this.reminder = reminder;
         this.id = id;
-        this.thisWeekOrActive = thisWeekOrActive;
+        this.flag = flag;
     }
 
     @Override

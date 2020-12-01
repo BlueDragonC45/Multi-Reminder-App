@@ -1,6 +1,8 @@
-package com.e13.multi_reminder_app.RecyclerViewParts;
+package com.e13.multi_reminder_app;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +13,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.e13.multi_reminder_app.DatabaseHelper;
-import com.e13.multi_reminder_app.HelperMethods;
-import com.e13.multi_reminder_app.R;
-import com.e13.multi_reminder_app.Settings;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class RecyclerViewAdapterAttachments extends RecyclerView.Adapter<RecyclerViewAdapterAttachments.ViewHolder> {
 
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper;
-    Settings settings = new Settings();
-    private ArrayList<String> mlist;
+    private ArrayList<pair> mList;
     private Context mContext;
+    Calendar calendar = Calendar.getInstance();
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
-    public RecyclerViewAdapterAttachments(ArrayList<String> mlist, Context mcontext) {
-        this.mlist = mlist;
-        this.mContext = mcontext;
+    public RecyclerViewAdapterAttachments(ArrayList<pair> mList, Context mContext) {
+        this.mList = mList;
+        this.mContext = mContext;
         dbHelper = new DatabaseHelper(mContext);
     }
 
@@ -41,21 +43,23 @@ public class RecyclerViewAdapterAttachments extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapterAttachments.ViewHolder holder, final int position) {
-        final String[] str = mlist.get(position).split(",");
-        holder.reminderName.setText(String.format("%s:    %s", str[0], str[1]));
-        holder.priorityColor.setImageResource(helper.getPriorityImage(Integer.parseInt(str[2])));
+        final Reminder reminder = mList.get(position).reminder;
+        calendar.setTimeInMillis(reminder.timeUntil);
+        holder.reminderName.setText(String.format("%s:    %s", reminder.name, dateFormat.format(calendar.getTime())));
+        holder.priorityColor.setImageResource(helper.getPriorityImage(reminder.priority));
 
         holder.parent_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                //NEED THIS
+                v.setVisibility(View.GONE);
+                ReminderCreationActivity.changeAttachment(mList.get(position).attachment);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mlist.size();
+        return mList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

@@ -9,14 +9,16 @@ public class Reminder implements Serializable, Comparable<Reminder> {
     public int priority;
     public String tier;
     public String frequency;
+    public int attachment;
 
 
-    public Reminder(String name, long timeUntil, int priority, String tier, String frequency) {
+    public Reminder(String name, long timeUntil, int priority, String tier, String frequency, int attachment) {
         this.name = name;
         this.timeUntil = timeUntil;
         this.priority = priority;
         this.tier = tier;
         this.frequency = frequency;
+        this.attachment = attachment;
 }
 
     public Reminder(Reminder reminder, long timeUntil) {
@@ -25,7 +27,7 @@ public class Reminder implements Serializable, Comparable<Reminder> {
         this.priority = reminder.priority;
         this.tier = reminder.tier;
         this.frequency = reminder.frequency;
-
+        this.attachment = reminder.attachment;
     }
 
     @Override

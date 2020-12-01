@@ -17,7 +17,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.e13.multi_reminder_app.RecyclerViewParts.RecyclerViewAdapterInactive;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.DateFormat;
@@ -110,7 +109,7 @@ public class comingUpActivity extends AppCompatActivity {
             }
             for (int i = 0; i < sorter.size(); i++) {
                 Reminder reminder = sorter.get(i).reminder;
-                if (sorter.get(i).thisWeekOrActive == 1) {
+                if (sorter.get(i).flag == 1) {
                     calendar.setTimeInMillis(reminder.timeUntil);
                     String priority = helper.getPriority(reminder.priority);
                     String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","

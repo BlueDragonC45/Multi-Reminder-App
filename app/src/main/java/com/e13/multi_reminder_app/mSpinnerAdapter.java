@@ -1,4 +1,4 @@
-package com.e13.multi_reminder_app.RecyclerViewParts;
+package com.e13.multi_reminder_app;
 
 import android.content.Context;
 import android.view.LayoutInflater;

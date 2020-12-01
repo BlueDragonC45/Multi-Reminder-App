@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.e13.multi_reminder_app.RecyclerViewParts.RecyclerViewAdapterInactive;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.DateFormat;

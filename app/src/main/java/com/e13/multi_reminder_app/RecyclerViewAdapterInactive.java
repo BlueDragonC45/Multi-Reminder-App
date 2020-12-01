@@ -1,4 +1,4 @@
-package com.e13.multi_reminder_app.RecyclerViewParts;
+package com.e13.multi_reminder_app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -56,7 +56,11 @@ public class RecyclerViewAdapterInactive extends RecyclerView.Adapter<RecyclerVi
             public void onClick(final View v) {
                 AlertDialog.Builder builder =  new AlertDialog.Builder(mContext);
                 builder.setTitle(str[0]);
-                builder.setMessage("Date: " + str[1] + "\n" + "Priority: " + str[2] + "\n" + "Frequency: " + str[3]);
+                String msg = "Date: " + str[1] + "\n" + "Priority: " + str[2] + "\n" + "Frequency: " + str[3];
+                if (dbHelper.getById(Integer.parseInt(str[4])).attachment != 0) {
+                    msg += "\n" + dbHelper.getById(dbHelper.getById(Integer.parseInt(str[4])).attachment).name;
+                }
+                builder.setMessage(msg);
 
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override

@@ -16,14 +16,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.e13.multi_reminder_app.RecyclerViewParts.RecyclerViewAdapterActive;
 import com.google.android.material.navigation.NavigationView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class ActiveRemindersActivity extends AppCompatActivity {
 
@@ -31,7 +26,7 @@ public class ActiveRemindersActivity extends AppCompatActivity {
     DatabaseHelper dbHelper = new DatabaseHelper(this);
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private ArrayList<String> activeReminders = new ArrayList<>();
+    private ArrayList<Reminder> activeReminders = new ArrayList<>();
     RecyclerViewAdapterActive adapter;
 
     @Override
@@ -77,18 +72,16 @@ public class ActiveRemindersActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addAll(ArrayList<String> list){
+    public void addAll(ArrayList<Reminder> list){
         activeReminders.clear();
         activeReminders.addAll(list);
         adapter.notifyDataSetChanged();
     }
 
     private void initList() {
-        ArrayList<String> dataList = new ArrayList<>();
+        ArrayList<Reminder> dataList = new ArrayList<>();
         ArrayList<triplicate> sorter = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
-        Calendar calendar = Calendar.getInstance();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
         if(res.getCount() == 0) {
 
@@ -99,12 +92,8 @@ public class ActiveRemindersActivity extends AppCompatActivity {
             }
             for (int i = 0; i < sorter.size(); i++) {
                 Reminder reminder = sorter.get(i).reminder;
-                if (sorter.get(i).thisWeekOrActive == 1) {
-                    calendar.setTimeInMillis(reminder.timeUntil);
-                    String priority = helper.getPriority(reminder.priority);
-                    String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                            + reminder.frequency + "," + sorter.get(i).id + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
-                    dataList.add(msg);
+                if (sorter.get(i).flag == 1) {
+                    dataList.add(reminder);
                 }
             }
         }

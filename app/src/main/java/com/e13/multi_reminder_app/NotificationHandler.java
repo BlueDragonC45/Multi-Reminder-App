@@ -53,7 +53,7 @@ class workerThread extends Thread {
                 Reminder reminder = (Reminder) dbHelper.readByte(res.getBlob(1));
                 if (dbHelper.isActive(reminder) == 1) {
                     active = true;
-                    dbHelper.updateData(res.getInt(0), reminder, res.getInt(3), 1);
+                    dbHelper.updateData(res.getInt(0), reminder, res.getInt(2), 1);
                     firstReminder = reminder;
                 } else if (res.getInt(4) == 1) {
                     active = true;
