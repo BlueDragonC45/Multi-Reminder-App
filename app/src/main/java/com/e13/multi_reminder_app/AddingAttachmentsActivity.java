@@ -2,9 +2,12 @@ package com.e13.multi_reminder_app;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,11 +24,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddingAttachmentsActivity extends AppCompatActivity {
 
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
+    ArrayList<Reminder> dataList = new ArrayList<>();
     ArrayList<String> tiersList = new ArrayList<>();
     ArrayList<String> prioritiesList = new ArrayList<>();
     ArrayList<String> recyclerList = new ArrayList<>();
@@ -40,8 +46,10 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
 
             final CheckBox checkBox = findViewById(R.id.checkBoxAttachments);
             final LinearLayout filters = findViewById(R.id.searchFilters);
+            final EditText editTextName = findViewById(R.id.editTextName);
             final Spinner tiers = findViewById(R.id.spinnerTier);
             final Spinner priority = findViewById(R.id.spinnerPriority);
+
             initLists();
             mSpinnerAdapter AdapterTiers = new mSpinnerAdapter(this, tiersList);
             mSpinnerAdapter AdapterPriorities = new mSpinnerAdapter(this, prioritiesList);
@@ -53,11 +61,13 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (checkBox.isChecked()) {
                         filters.setVisibility(View.VISIBLE);
-                        initRecyclerView(selTier, selPriority);
                     } else {
                         filters.setVisibility(View.GONE);
-                        initRecyclerViewAll();
+                        editTextName.setText("");
+                        selTier = "None";
+                        selPriority = "None";
                     }
+                    initRecyclerView(editTextName.getText().toString(), selTier, selPriority);
                 }
             });
 
@@ -66,7 +76,7 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String clickedItem = (String) parent.getItemAtPosition(position);
                     selTier = clickedItem;
-                    initRecyclerView(clickedItem, selPriority);
+                    initRecyclerView(editTextName.getText().toString(), clickedItem, selPriority);
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) { selTier = "None"; } });
@@ -76,13 +86,25 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String clickedItem = (String) parent.getItemAtPosition(position);
                     selPriority = clickedItem;
-                    initRecyclerView(selTier, clickedItem);
+                    initRecyclerView(editTextName.getText().toString(), selTier, clickedItem);
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) { selPriority = "None"; } });
 
+            editTextName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    initRecyclerView(editTextName.getText().toString(), selTier, selPriority);
+                }
+            });
+
             recyclerAdapter = new RecyclerViewAdapterAttachments(recyclerList, this);
-            initRecyclerView(selTier, selPriority);
+            initRecyclerView(editTextName.getText().toString(), selTier, selPriority);
             RecyclerView recyclerView = findViewById(R.id.recycler_view_attachments);
             recyclerView.setAdapter(recyclerAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -102,57 +124,41 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
         prioritiesList.add("Low");
     }
 
-    public void addAll(ArrayList<String> list){
+    public void addAll(ArrayList<Reminder> list){
         recyclerList.clear();
-        recyclerList.addAll(list);
+        ArrayList<String> data = new ArrayList<>();
+        if (list.size() > 0) {
+            Calendar calendar = Calendar.getInstance();
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
+            for (int i = 0; i < list.size(); i++) {
+                calendar.setTimeInMillis(list.get(i).timeUntil);
+                data.add(list.get(i).name + "," + dateFormat.format(calendar.getTime()) + "," + list.get(i).priority);
+            }
+        }
+        recyclerList.addAll(data);
         recyclerAdapter.notifyDataSetChanged();
     }
 
-    private void initRecyclerView(String selTier, String selPriority) {
-        if (selTier.equals("None") && selPriority.equals("None")) {
-            initRecyclerViewAll();
-        } else if (selTier.equals("None")) {
-            initRecyclerViewPriority(selPriority);
-        } else if (selPriority.equals("None")) {
-            initRecyclerViewTier(selTier);
-        } else {
-            ArrayList<String> dataList = new ArrayList<>();
-            ArrayList<triplicate> sorter = new ArrayList<>();
-            Cursor res = dbHelper.getAllData();
-            Calendar calendar = Calendar.getInstance();
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
-
-            if (res.getCount() == 0) {
-
-            } else {
-                while (res.moveToNext()) {
-                    sorter.add(new triplicate((Reminder) dbHelper.readByte(res.getBlob(1)), res.getInt(0), res.getInt(4)));
-                    sorter.sort(null);
-                }
-                for (int i = 0; i < sorter.size(); i++) {
-                    Reminder reminder = sorter.get(i).reminder;
-                    if ((sorter.get(i).reminder.tier).equals(selTier.toUpperCase()) && (helper.getPriority(sorter.get(i).reminder.priority)).equals(selPriority)) {
-                        calendar.setTimeInMillis(reminder.timeUntil);
-                        String priority = helper.getPriority(reminder.priority);
-                        String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                                + reminder.frequency + "," + sorter.get(i).id + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
-                        dataList.add(msg);
-                    }
-                }
-            }
-            if (dataList.size() == 0) {
-                Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
-            }
-            addAll(dataList);
+    private void initRecyclerView(String name, String selTier, String selPriority) {
+        dataList.clear();
+        dataList.addAll(initRecyclerViewAll());
+        if (name != null && !name.isEmpty()) {
+            System.out.println("name");
+            removeNames(name);
+        }
+        if (!selTier.equals("None")) {
+            removeTier(selTier);
+        }
+        if (!selPriority.equals("None")) {
+            System.out.println("priority");
+            removePriority(selPriority);
         }
     }
 
-    private void initRecyclerViewAll() {
-        ArrayList<String> dataList = new ArrayList<>();
+    private ArrayList<Reminder> initRecyclerViewAll() {
+        ArrayList<Reminder> dl = new ArrayList<>();
         ArrayList<triplicate> sorter = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
-        Calendar calendar = Calendar.getInstance();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
         if (res.getCount() == 0) {
 
@@ -162,78 +168,50 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
                 sorter.sort(null);
             }
             for (int i = 0; i < sorter.size(); i++) {
-                Reminder reminder = sorter.get(i).reminder;
-                calendar.setTimeInMillis(reminder.timeUntil);
-                String priority = helper.getPriority(reminder.priority);
-                String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                        + reminder.frequency + "," + sorter.get(i).id + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
-                dataList.add(msg);
+                dl.add(sorter.get(i).reminder);
             }
         }
-        if (dataList.size() == 0) {
+        if (dl.size() == 0) {
             Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
+        }
+        addAll(dl);
+        return dl;
+    }
+
+    private void removeNames(String name) {
+        for (int i = 0; i < dataList.size(); i++) {
+            Reminder reminder = dataList.get(i);
+            Pattern p = Pattern.compile(name);
+            Matcher m = p.matcher(reminder.name.toLowerCase());
+            if (!m.find()) {
+                dataList.remove(reminder);
+                i--;
+            }
         }
         addAll(dataList);
     }
 
-    private void initRecyclerViewTier(String selTier) {
-        ArrayList<String> dataList = new ArrayList<>();
-        ArrayList<triplicate> sorter = new ArrayList<>();
-        Cursor res = dbHelper.getAllData();
-        Calendar calendar = Calendar.getInstance();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
-
-        if (res.getCount() == 0) {
-
-        } else {
-            while (res.moveToNext()) {
-                sorter.add(new triplicate((Reminder) dbHelper.readByte(res.getBlob(1)), res.getInt(0), res.getInt(4)));
-                sorter.sort(null);
+    private void removeTier( String selTier) {
+            System.out.println("called");
+        for (int i = 0; i < dataList.size(); i++) {
+            Reminder reminder = dataList.get(i);
+            System.out.println(!(reminder.tier).equals(selTier.toUpperCase()));
+            if (!(reminder.tier).equals(selTier.toUpperCase())) {
+                System.out.println("tierRemoved");
+                dataList.remove(reminder);
+                i--;
             }
-            for (int i = 0; i < sorter.size(); i++) {
-                Reminder reminder = sorter.get(i).reminder;
-                if ((sorter.get(i).reminder.tier).equals(selTier.toUpperCase())) {
-                    calendar.setTimeInMillis(reminder.timeUntil);
-                    String priority = helper.getPriority(reminder.priority);
-                    String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                            + reminder.frequency + "," + sorter.get(i).id + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
-                    dataList.add(msg);
-                }
-            }
-        }
-        if (dataList.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
         }
         addAll(dataList);
     }
 
-    private void initRecyclerViewPriority(String selPriority) {
-        ArrayList<String> dataList = new ArrayList<>();
-        ArrayList<triplicate> sorter = new ArrayList<>();
-        Cursor res = dbHelper.getAllData();
-        Calendar calendar = Calendar.getInstance();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
-
-        if (res.getCount() == 0) {
-
-        } else {
-            while (res.moveToNext()) {
-                sorter.add(new triplicate((Reminder) dbHelper.readByte(res.getBlob(1)), res.getInt(0), res.getInt(4)));
-                sorter.sort(null);
+    private void removePriority(String selPriority) {
+        for (int i = 0; i < dataList.size(); i++) {
+             Reminder reminder = dataList.get(i);
+             if (!(helper.getPriority(reminder.priority)).equals(selPriority)) {
+                 dataList.remove(reminder);
+                 i--;
             }
-            for (int i = 0; i < sorter.size(); i++) {
-                Reminder reminder = sorter.get(i).reminder;
-                if ((helper.getPriority(sorter.get(i).reminder.priority)).equals(selPriority)) {
-                    calendar.setTimeInMillis(reminder.timeUntil);
-                    String priority = helper.getPriority(reminder.priority);
-                    String msg = reminder.name + "," + dateFormat.format(calendar.getTime()) + "," + priority + ","
-                            + reminder.frequency + "," + sorter.get(i).id + "," + reminder.timeUntil + "," + reminder.priority + "," + reminder.tier;
-                    dataList.add(msg);
-                }
-            }
-        }
-        if (dataList.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
         }
         addAll(dataList);
     }

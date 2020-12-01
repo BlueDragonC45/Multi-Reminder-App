@@ -43,7 +43,7 @@ public class RecyclerViewAdapterAttachments extends RecyclerView.Adapter<Recycle
     public void onBindViewHolder(@NonNull RecyclerViewAdapterAttachments.ViewHolder holder, final int position) {
         final String[] str = mlist.get(position).split(",");
         holder.reminderName.setText(String.format("%s:    %s", str[0], str[1]));
-        holder.priorityColor.setImageResource(helper.getPriorityImage(Integer.parseInt(str[6])));
+        holder.priorityColor.setImageResource(helper.getPriorityImage(Integer.parseInt(str[2])));
 
         holder.parent_layout.setOnClickListener(new View.OnClickListener() {
             @Override
