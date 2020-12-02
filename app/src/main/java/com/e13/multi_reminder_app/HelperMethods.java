@@ -6,18 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
-class pair implements Comparable<pair> {
+class Pair implements Comparable<Pair> {
 
     Reminder reminder;
-    int attachment;
+    int data;
 
-    public pair(Reminder reminder, int attachment) {
+    public Pair(Reminder reminder, int data) {
         this.reminder = reminder;
-        this.attachment = attachment;
+        this.data = data;
     }
 
     @Override
-    public int compareTo(pair o) {
+    public int compareTo(Pair o) {
         return  this.reminder.compareTo(o.reminder);
     }
 }

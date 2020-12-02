@@ -15,14 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.e13.multi_reminder_app.DatabaseHelper;
-import com.e13.multi_reminder_app.HelperMethods;
-import com.e13.multi_reminder_app.ActiveRemindersActivity;
-import com.e13.multi_reminder_app.NotificationHandler;
-import com.e13.multi_reminder_app.R;
-import com.e13.multi_reminder_app.Reminder;
-import com.e13.multi_reminder_app.Settings;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,14 +26,14 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper;
     Settings settings = new Settings();
-    private ArrayList<Reminder> mlist;
+    private ArrayList<Pair> mlist;
     private Context mContext;
     Calendar calendar = Calendar.getInstance();
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
-    public RecyclerViewAdapterActive (ArrayList<Reminder> mlist, Context mcontext) {
+    public RecyclerViewAdapterActive (ArrayList<Pair> mlist, Context mContext) {
         this.mlist = mlist;
-        this.mContext = mcontext;
+        this.mContext = mContext;
         dbHelper = new DatabaseHelper(mContext);
     }
 
@@ -54,7 +46,8 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapterActive.ViewHolder holder, final int position) {
-        final Reminder reminder = mlist.get(position);
+        final Reminder reminder = mlist.get(position).reminder;
+        final int id = mlist.get(position).data;
         calendar.setTimeInMillis(reminder.timeUntil);
         holder.reminderName.setText(String.format("%s:    %s", reminder.name, dateFormat.format(calendar.getTime())));
         holder.priorityColor.setImageResource(helper.getPriorityImage(reminder.priority));
@@ -71,19 +64,19 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (reminder.frequency.equals("Never")) {
-                            dbHelper.deleteData(dbHelper.getByReminder(reminder));
+                            dbHelper.deleteData(id);
                         } else {
                             long newTime = helper.findNewTime(reminder.frequency, reminder.timeUntil);
                             int attachment;
                             if (reminder.attachment == 0) { attachment = 0; } else { attachment = 1; }
-                            dbHelper.updateData(dbHelper.getByReminder(reminder), new Reminder(reminder, newTime),
+                            dbHelper.updateData(id, new Reminder(reminder, newTime),
                                     attachment, 0);
                         }
-                        Intent intent = new Intent (v.getContext(), ActiveRemindersActivity.class);
+                        Intent intent = new Intent (mContext, ActiveRemindersActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         Activity activity = (Activity) v.getContext();
-                        v.getContext().startActivity(intent);
-                        v.getContext().startService(new Intent(v.getContext(), NotificationHandler.class));
+                        mContext.startActivity(intent);
+                        mContext.startService(new Intent(mContext, NotificationHandler.class));
                         activity.finish();
 
                     }
@@ -94,13 +87,13 @@ public class RecyclerViewAdapterActive extends RecyclerView.Adapter<RecyclerView
                     public void onClick(DialogInterface dialog, int which) {
                         int attachment;
                         if (reminder.attachment == 0) { attachment = 0; } else { attachment = 1; }
-                        dbHelper.updateData(dbHelper.getByReminder(reminder), new Reminder(reminder, reminder.timeUntil + settings.getSnoozeTime()),
+                        dbHelper.updateData(id, new Reminder(reminder, reminder.timeUntil + settings.getSnoozeTime()),
                                 attachment, 0);
-                        Intent intent = new Intent (v.getContext(), v.getClass());
+                        Intent intent = new Intent (mContext, ActiveRemindersActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         Activity activity = (Activity) v.getContext();
-                        v.getContext().startActivity(intent);
-                        v.getContext().startService(new Intent(v.getContext(), NotificationHandler.class));
+                        mContext.startActivity(intent);
+                        mContext.startService(new Intent(mContext, NotificationHandler.class));
                         activity.finish();
                     }
                 });

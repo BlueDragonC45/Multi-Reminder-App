@@ -1,6 +1,5 @@
 package com.e13.multi_reminder_app;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -25,10 +24,10 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
 
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
-    ArrayList<pair> dataList = new ArrayList<>();
+    ArrayList<Pair> dataList = new ArrayList<>();
     ArrayList<String> tiersList = new ArrayList<>();
     ArrayList<String> prioritiesList = new ArrayList<>();
-    ArrayList<pair> recyclerList = new ArrayList<>();
+    ArrayList<Pair> recyclerList = new ArrayList<>();
     RecyclerViewAdapterAttachments recyclerAdapter;
     String selTier = "None";
     String selPriority = "None";
@@ -118,7 +117,7 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
         prioritiesList.add("Low");
     }
 
-    public void addAll(ArrayList<pair> list){
+    public void addAll(ArrayList<Pair> list){
         recyclerList.clear();
         recyclerList.addAll(list);
         recyclerAdapter.notifyDataSetChanged();
@@ -140,8 +139,8 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<pair> initRecyclerViewAll() {
-        ArrayList<pair> dl = new ArrayList<>();
+    private ArrayList<Pair> initRecyclerViewAll() {
+        ArrayList<Pair> dl = new ArrayList<>();
         ArrayList<triplicate> sorter = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
 
@@ -153,7 +152,7 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
                 sorter.sort(null);
             }
             for (int i = 0; i < sorter.size(); i++) {
-                dl.add(new pair(sorter.get(i).reminder, sorter.get(i).reminder.attachment));
+                dl.add(new Pair(sorter.get(i).reminder, sorter.get(i).reminder.attachment));
             }
         }
         if (dl.size() == 0) {
@@ -165,7 +164,7 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
 
     private void removeNames(String name) {
         for (int i = 0; i < dataList.size(); i++) {
-            pair pair = dataList.get(i);
+            Pair pair = dataList.get(i);
             Reminder reminder = pair.reminder;
             Pattern p = Pattern.compile(name);
             Matcher m = p.matcher(reminder.name.toLowerCase());
@@ -180,7 +179,7 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
     private void removeTier( String selTier) {
             System.out.println("called");
         for (int i = 0; i < dataList.size(); i++) {
-            pair pair = dataList.get(i);
+            Pair pair = dataList.get(i);
             Reminder reminder = pair.reminder;
             System.out.println(!(reminder.tier).equals(selTier.toUpperCase()));
             if (!(reminder.tier).equals(selTier.toUpperCase())) {
@@ -194,7 +193,7 @@ public class AddingAttachmentsActivity extends AppCompatActivity {
 
     private void removePriority(String selPriority) {
         for (int i = 0; i < dataList.size(); i++) {
-            pair pair = dataList.get(i);
+            Pair pair = dataList.get(i);
             Reminder reminder = pair.reminder;
              if (!(helper.getPriority(reminder.priority)).equals(selPriority)) {
                  dataList.remove(pair);

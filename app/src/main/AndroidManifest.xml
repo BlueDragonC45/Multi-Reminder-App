@@ -12,6 +12,7 @@
         android:theme="@style/testStyle">
 
         <service android:name=".NotificationHandler" />
+        <activity android:name=".AlarmActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ActiveRemindersActivity" />
         <activity android:name=".comingUpActivity" />

@@ -38,7 +38,7 @@ public class mSpinnerAdapter extends ArrayAdapter<String> {
         }
         TextView service = convertView.findViewById(R.id.spinner_text);
 
-        String currentItem = (String) getItem(position);
+        String currentItem = getItem(position);
 
         assert currentItem != null;
         service.setText(currentItem);

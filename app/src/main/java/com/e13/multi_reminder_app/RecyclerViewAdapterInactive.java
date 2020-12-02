@@ -58,7 +58,7 @@ public class RecyclerViewAdapterInactive extends RecyclerView.Adapter<RecyclerVi
                 builder.setTitle(str[0]);
                 String msg = "Date: " + str[1] + "\n" + "Priority: " + str[2] + "\n" + "Frequency: " + str[3];
                 if (dbHelper.getById(Integer.parseInt(str[4])).attachment != 0) {
-                    msg += "\n" + dbHelper.getById(dbHelper.getById(Integer.parseInt(str[4])).attachment).name;
+                    msg += "\n Attached to: " + dbHelper.getById(dbHelper.getById(Integer.parseInt(str[4])).attachment).name;
                 }
                 builder.setMessage(msg);
 
@@ -90,12 +90,33 @@ public class RecyclerViewAdapterInactive extends RecyclerView.Adapter<RecyclerVi
                 builder.setNegativeButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent (v.getContext(), ReminderUpdateActivity.class);
-                        intent.putExtra("oldReminder", dbHelper.makeByte(dbHelper.getById(Integer.parseInt(str[4]))));
-                        intent.putExtra("id", Integer.parseInt(str[4]));
-                        v.getContext().startActivity(intent);
-                        Activity activity = (Activity) v.getContext();
-                        activity.finish();
+                        AlertDialog.Builder update =  new AlertDialog.Builder(mContext);
+                        update.setTitle("How would you like to Update?");
+                        update.setPositiveButton("Modify", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent (mContext, ReminderUpdateActivity.class);
+                                intent.putExtra("oldReminder", dbHelper.makeByte(dbHelper.getById(Integer.parseInt(str[4]))));
+                                intent.putExtra("id", Integer.parseInt(str[4]));
+                                mContext.startActivity(intent);
+                                Activity activity = (Activity) v.getContext();
+                                activity.finish();
+                            }
+                        });
+
+                        update.setNegativeButton("Quick Delay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dbHelper.cascadeDelay(Integer.parseInt(str[4]));
+                                Intent intent = new Intent (mContext, mContext.getClass());
+                                mContext.startActivity(intent);
+                                Activity activity = (Activity) mContext;
+                                activity.finish();
+                            }
+                        });
+
+                        AlertDialog updateAlert = update.create();
+                        updateAlert.show();
                     }
                 });
 

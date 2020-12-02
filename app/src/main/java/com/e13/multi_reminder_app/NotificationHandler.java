@@ -20,6 +20,7 @@ class workerThread extends Thread {
     Context context;
     DatabaseHelper dbHelper;
     Settings settings = new Settings();
+    Reminder firstReminder = null;
 
     workerThread(Context context) {
         this.context = context;
@@ -39,7 +40,7 @@ class workerThread extends Thread {
     }
 
     private long checkReminders() {
-        Reminder firstReminder = null;
+        firstReminder = null;
         boolean active = false;
         boolean empty = false;
         long lowestTime = Long.MAX_VALUE;
@@ -105,12 +106,13 @@ class workerThread extends Thread {
     public void createAlarm() {
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        Intent fullScreenIntent = new Intent(context, SettingsActivity.class);
+        Intent fullScreenIntent = new Intent(context, AlarmActivity.class);
+        fullScreenIntent.putExtra("reminderName", firstReminder.name);
         fullScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
                 fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        AlarmManagerCompat.setExactAndAllowWhileIdle(manager, AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1, fullScreenPendingIntent);
+        AlarmManagerCompat.setExactAndAllowWhileIdle(manager, AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, fullScreenPendingIntent);
     }
 
 }

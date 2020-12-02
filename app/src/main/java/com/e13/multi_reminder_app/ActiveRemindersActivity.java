@@ -22,11 +22,10 @@ import java.util.ArrayList;
 
 public class ActiveRemindersActivity extends AppCompatActivity {
 
-    HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper = new DatabaseHelper(this);
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private ArrayList<Reminder> activeReminders = new ArrayList<>();
+    private ArrayList<Pair> activeReminders = new ArrayList<>();
     RecyclerViewAdapterActive adapter;
 
     @Override
@@ -72,14 +71,14 @@ public class ActiveRemindersActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addAll(ArrayList<Reminder> list){
+    public void addAll(ArrayList<Pair> list){
         activeReminders.clear();
         activeReminders.addAll(list);
         adapter.notifyDataSetChanged();
     }
 
     private void initList() {
-        ArrayList<Reminder> dataList = new ArrayList<>();
+        ArrayList<Pair> dataList = new ArrayList<>();
         ArrayList<triplicate> sorter = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
 
@@ -93,7 +92,7 @@ public class ActiveRemindersActivity extends AppCompatActivity {
             for (int i = 0; i < sorter.size(); i++) {
                 Reminder reminder = sorter.get(i).reminder;
                 if (sorter.get(i).flag == 1) {
-                    dataList.add(reminder);
+                    dataList.add(new Pair(reminder, sorter.get(i).id));
                 }
             }
         }

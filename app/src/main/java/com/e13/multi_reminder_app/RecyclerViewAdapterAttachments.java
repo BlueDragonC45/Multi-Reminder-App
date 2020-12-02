@@ -1,8 +1,6 @@
 package com.e13.multi_reminder_app;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +21,12 @@ public class RecyclerViewAdapterAttachments extends RecyclerView.Adapter<Recycle
 
     HelperMethods helper = new HelperMethods();
     DatabaseHelper dbHelper;
-    private ArrayList<pair> mList;
+    private ArrayList<Pair> mList;
     private Context mContext;
     Calendar calendar = Calendar.getInstance();
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.CANADA);
 
-    public RecyclerViewAdapterAttachments(ArrayList<pair> mList, Context mContext) {
+    public RecyclerViewAdapterAttachments(ArrayList<Pair> mList, Context mContext) {
         this.mList = mList;
         this.mContext = mContext;
         dbHelper = new DatabaseHelper(mContext);
@@ -51,8 +49,7 @@ public class RecyclerViewAdapterAttachments extends RecyclerView.Adapter<Recycle
         holder.parent_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                v.setVisibility(View.GONE);
-                ReminderCreationActivity.changeAttachment(mList.get(position).attachment);
+                ReminderCreationActivity.changeAttachment(mList.get(position).data);
             }
         });
     }

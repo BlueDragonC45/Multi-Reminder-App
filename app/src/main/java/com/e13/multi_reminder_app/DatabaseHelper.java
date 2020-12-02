@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_2 = "attachment";
     public static final String COL_3 = "this_week_flag";
     public static final String COL_4 = "active";
+    private Settings settings = new Settings();
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -125,27 +126,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         throw new IndexOutOfBoundsException("Id not found");
     }
 
-    public int getByReminder(Reminder reminder) throws IndexOutOfBoundsException{
-        Cursor res = getAllData();
-        while (res.moveToNext()) {
-            Reminder rmd = (Reminder) readByte(res.getBlob(1));
-            if (reminder.equals(rmd)) {
-                return res.getInt(0);
-            }
-        }
-        throw new IndexOutOfBoundsException("Reminder not found");
-    }
-
-    public int getAttachment(int id) throws  IndexOutOfBoundsException{
-        Cursor res = getAllData();
-        while (res.moveToNext()) {
-            if (id == res.getInt(0)) {
-                return res.getInt(2);
-            }
-        }
-        throw new IndexOutOfBoundsException("Reminder not found");
-    }
-
     public int isActive(Reminder reminder) {
         if ((reminder.timeUntil - System.currentTimeMillis()) < 10000) {
             return 1;
@@ -154,4 +134,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void cascadeDelay(int id) {
+        Cursor res = getAllData();
+        while (res.moveToNext()) {
+            if (res.getInt(0) == id) {
+                Reminder rmd = (Reminder) readByte(res.getBlob(1));
+                updateData(res.getInt(0), new Reminder(rmd, rmd.timeUntil + settings.getSnoozeTime()), res.getInt(2), res.getInt(4));
+                if (res.getInt(2) == 1) {
+                    cascadeDelay(rmd.attachment);
+                } else {
+                    return;
+                }
+            }
+        }
+
+    }
 }

@@ -36,11 +36,12 @@ public class ReminderCreationActivity extends AppCompatActivity {
     private int attachment = 0;
     private int attachmentFlag = 0;
     static TextView currentAttachment;
+    static NestedScrollView attachmentsLayout;
 
-    ArrayList<pair> dataList = new ArrayList<>();
+    ArrayList<Pair> dataList = new ArrayList<>();
     ArrayList<String> tiersList = new ArrayList<>();
     ArrayList<String> prioritiesList = new ArrayList<>();
-    ArrayList<pair> recyclerList = new ArrayList<>();
+    ArrayList<Pair> recyclerList = new ArrayList<>();
     RecyclerViewAdapterAttachments recyclerAdapter;
     String selTier = "None";
     String selPriority = "None";
@@ -167,7 +168,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         final Button addAttachments = findViewById(R.id.addAttachmentButton);
-        final NestedScrollView attachmentsLayout = findViewById(R.id.nScrollView);
+        attachmentsLayout = findViewById(R.id.nScrollView);
         attachmentsLayout.setVisibility(View.GONE);
 
         addAttachments.setOnClickListener(new View.OnClickListener() {
@@ -242,7 +243,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
         prioritiesList.add("Low");
     }
 
-    public void addAll(ArrayList<pair> list){
+    public void addAll(ArrayList<Pair> list){
         recyclerList.clear();
         recyclerList.addAll(list);
         recyclerAdapter.notifyDataSetChanged();
@@ -264,8 +265,8 @@ public class ReminderCreationActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<pair> initRecyclerViewAll() {
-        ArrayList<pair> dl = new ArrayList<>();
+    private ArrayList<Pair> initRecyclerViewAll() {
+        ArrayList<Pair> dl = new ArrayList<>();
         ArrayList<triplicate> sorter = new ArrayList<>();
         Cursor res = dbHelper.getAllData();
 
@@ -278,12 +279,9 @@ public class ReminderCreationActivity extends AppCompatActivity {
             }
             for (int i = 0; i < sorter.size(); i++) {
                 if ((sorter.get(i).flag) == 0) {
-                    dl.add(new pair(sorter.get(i).reminder, sorter.get(i).reminder.attachment));
+                    dl.add(new Pair(sorter.get(i).reminder, sorter.get(i).id));
                 }
             }
-        }
-        if (dl.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No reminders to show", Toast.LENGTH_LONG).show();
         }
         addAll(dl);
         return dl;
@@ -291,7 +289,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
 
     private void removeNames(String name) {
         for (int i = 0; i < dataList.size(); i++) {
-            pair pair = dataList.get(i);
+            Pair pair = dataList.get(i);
             Reminder reminder = pair.reminder;
             Pattern p = Pattern.compile(name);
             Matcher m = p.matcher(reminder.name.toLowerCase());
@@ -305,7 +303,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
 
     private void removeTier( String selTier) {
         for (int i = 0; i < dataList.size(); i++) {
-            pair pair = dataList.get(i);
+            Pair pair = dataList.get(i);
             Reminder reminder = pair.reminder;
             if (!(reminder.tier).equals(selTier.toUpperCase())) {
                 dataList.remove(pair);
@@ -317,7 +315,7 @@ public class ReminderCreationActivity extends AppCompatActivity {
 
     private void removePriority(String selPriority) {
         for (int i = 0; i < dataList.size(); i++) {
-            pair pair = dataList.get(i);
+            Pair pair = dataList.get(i);
             Reminder reminder = pair.reminder;
             if (!(helper.getPriority(reminder.priority)).equals(selPriority)) {
                 dataList.remove(pair);
@@ -328,7 +326,9 @@ public class ReminderCreationActivity extends AppCompatActivity {
     }
 
     public static void changeAttachment(int id) {
-        currentAttachment.setText(id);
+        attachmentsLayout.setVisibility(View.GONE);
+        currentAttachment.setText(String.format("%s", id));
+        System.out.println(currentAttachment.getText().toString());
     }
 
 }
