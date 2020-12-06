@@ -29,16 +29,13 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.settings_layout);
 
         final EditText snoozeTime = findViewById(R.id.editTextSnoozeTime);
-        if (settings.getSnoozeTime() != 300000) {
-            int timeMin = (int) (settings.getSnoozeTime() / 60000);
-            snoozeTime.setText(String.valueOf(timeMin));
-        }
+        int timeMinSnooze = (int) (settings.getSnoozeTime() / 60000);
+        snoozeTime.setText(String.valueOf(timeMinSnooze));
+
 
         final EditText activeDelay = findViewById(R.id.editTextActiveDelay);
-        if (settings.getActiveDelay() != 60000) {
-            int timeMin = (int) (settings.getActiveDelay() / 60000);
-            activeDelay.setText(String.valueOf(timeMin));
-        }
+        int timeMinActive = (int) (settings.getActiveDelay() / 60000);
+        activeDelay.setText(String.valueOf(timeMinActive));
 
         Button apply = findViewById(R.id.applyChangesSettings);
         apply.setOnClickListener(new View.OnClickListener() {

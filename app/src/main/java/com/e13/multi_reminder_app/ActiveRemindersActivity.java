@@ -37,6 +37,7 @@ public class ActiveRemindersActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
+        actionBar.setTitle("Simple Reminder");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
